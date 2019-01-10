@@ -27,10 +27,7 @@ class BinaryTree
 		Node() = default;
 		~Node() = default;
 
-		void display()
-		{
-			std::cout << keyVal.first << " "; 
-		}
+		void display() {std::cout << keyVal.first << " "; }
 	};
 
 
@@ -58,6 +55,9 @@ class BinaryTree
 	}
 
 
+	void go_left(Node* &pnode) {pnode = pnode->left.get();}
+	void go_right(Node* &pnode) {pnode = pnode->right.get();}
+	void go_up(Node* &pnode) {pnode = pnode->Snode;}
 	Node* return_far_left() {return far_left;}
 	Node* return_far_right() {return far_right;}
 
@@ -102,15 +102,9 @@ class BinaryTree
 		switch (dir)
 		{
 			case insertDir::left_dir:
-				tmpB->display();
-				if (Snode) {std::cout << "go left -> insert: " << k << " Snode: "; Snode->display(); std::cout << std::endl;}
-				else {std::cout << "go left -> insert: " << k << " Snode: nullptr"; std::cout << std::endl;}
 				tmpB->left.reset(new Node{k, v, Snode, nullptr, nullptr});   
 				break;
 			case insertDir::right_dir:
-				tmpB->display();
-				if (Snode) {std::cout << "go right -> insert: " << k << " Snode: "; Snode->display(); std::cout << std::endl;}
-				else {std::cout << "go right -> insert: " << k << " Snode: nullptr"; std::cout << std::endl;}
 				tmpB->right.reset(new Node{k, v, Snode, nullptr, nullptr});   
 				break;
 			default:
@@ -121,31 +115,17 @@ class BinaryTree
 	Node* next(Node* pnode)
 	{
 		Node* tmp = nullptr;
-		if (! (pnode->right.get() ) )
-		{
-			tmp = pnode->Snode;
-			return tmp;			
-		}
+
+		if (! (pnode->right.get() ) ) {tmp = pnode->Snode; return tmp;	}
 
 		go_right(pnode);
 
-		if ( !(pnode->left.get()) ) 
-		{
-			return pnode;			
-		}
+		if ( !(pnode->left.get()) ) {return pnode;}
 
-		while (pnode->left.get())
-		{
-			go_left(pnode);
-		}
+		while (pnode->left.get()) {go_left(pnode);}
 
 		return pnode;
-
 	}
-
-	void go_left(Node* &pnode) {pnode = pnode->left.get();}
-	void go_right(Node* &pnode) {pnode = pnode->right.get();}
-	void go_up(Node* &pnode) {pnode = pnode->Snode;}
 
 	// class Iterator;
 	// Iterator begin() { return Iterator{far_left}; }
@@ -180,17 +160,14 @@ std::ostream& operator<<(std::ostream& os, BinaryTree<TK, TV>& tree)
 }
 
 
-
-
 int main() 
 {
 	BinaryTree<int, int> tree;
+
 	std::array<int, 9> keys{8, 3, 10, 6, 7, 1, 4, 14, 13};	
 	for (auto x: keys) {tree.insert(x,0);}
+
 	tree.commit();
-
-	std::cout << std::endl;
-
 	std::cout << tree;
 
 	return 0;
