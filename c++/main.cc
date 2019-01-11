@@ -28,6 +28,18 @@ class BinaryTree
 		~Node() = default;
 
 		void display() {std::cout << keyVal.first << " "; }
+
+		Node* next(Node* pnode)
+		{
+			Node* tmp = nullptr;
+
+			if (! (pnode->right.get() ) ) {tmp = pnode->Snode; return tmp;	}
+			pnode = pnode->right.get();
+			if ( !(pnode->left.get()) ) {return pnode;}
+			while (pnode->left.get()) {pnode = pnode->left.get();}
+			return pnode;
+		}
+
 	};
 
 
@@ -48,16 +60,12 @@ class BinaryTree
 	{
 		Node* tmpR = root.get();
 		Node* tmpL = root.get();
-		while (tmpL->left.get()) go_left(tmpL);
-		while (tmpR->right.get()) go_right(tmpR);
+		while (tmpL->left.get()) tmpL = tmpL->left.get();
+		while (tmpR->right.get()) tmpR = tmpR->right.get();
 		far_left = tmpL;
 		far_right = tmpR;
 	}
 
-
-	void go_left(Node* &pnode) {pnode = pnode->left.get();}
-	void go_right(Node* &pnode) {pnode = pnode->right.get();}
-	void go_up(Node* &pnode) {pnode = pnode->Snode;}
 	Node* return_far_left() {return far_left;}
 	Node* return_far_right() {return far_right;}
 
@@ -83,13 +91,13 @@ class BinaryTree
 
 			if (k < tmpA->keyVal.first)
 			{
-				go_left(tmpA);
+				tmpA = tmpA->left.get();
 				dir = insertDir::left_dir;
 				Snode = tmpB;
 			} 
 			else if (k > tmpA->keyVal.first)
-			{
-				go_right(tmpA);
+			{	
+				tmpA = tmpA->right.get();
 				dir = insertDir::right_dir; 
 			}
 			else 
@@ -112,50 +120,41 @@ class BinaryTree
 		};
 	}
 
-	Node* next(Node* pnode)
+	class Iterator;
+	Iterator begin() { return Iterator{far_left}; }
+	Iterator end() { return Iterator{far_right}; }
+
+	class Iterator
 	{
-		Node* tmp = nullptr;
+		Node* current;
 
-		if (! (pnode->right.get() ) ) {tmp = pnode->Snode; return tmp;	}
+		public:
+		Iterator(Node* n) : current{n} {}
 
-		go_right(pnode);
+		TK& operator*() const { return current->keyVal.first; }	
 
-		if ( !(pnode->left.get()) ) {return pnode;}
+		bool operator==(const Iterator& other) { return current == other.current; }
+		bool operator!=(const Iterator& other) { return !(*this == other); }
 
-		while (pnode->left.get()) {go_left(pnode);}
+		Iterator& operator++() 
+		{
+			current = current->next(current);
+			return *this;
+		}
 
-		return pnode;
-	}
+	};
 
-	// class Iterator;
-	// Iterator begin() { return Iterator{far_left}; }
-	// Iterator end() { return Iterator{far_right}; }
-
-	// class Iterator
-	// {
-	// 		Node* current;
-	// 		public:
-	// 		Iterator(Node* n) : current{n} {}
-	// };
 };
 
 
 template <class TK, class TV>
 std::ostream& operator<<(std::ostream& os, BinaryTree<TK, TV>& tree) 
 {
-	auto begin = tree.return_far_left();
-	auto end = tree.return_far_right();
-	auto tmp = begin;
-
-	while (tmp != end) 
-	{ 	
-	  os << tmp->keyVal.first << " ";
-	  tmp = tree.next(tmp);
-	}
-
-	os << end->keyVal.first << " ";
-	os << std::endl;
-	
+	auto it = tree.begin();
+	auto stop = tree.end();
+	for(; it!=stop; ++it)
+	  os << *it << " ";
+	os << *stop << std::endl;
 	return os;
 }
 
@@ -163,12 +162,9 @@ std::ostream& operator<<(std::ostream& os, BinaryTree<TK, TV>& tree)
 int main() 
 {
 	BinaryTree<int, int> tree;
-
 	std::array<int, 9> keys{8, 3, 10, 6, 7, 1, 4, 14, 13};	
 	for (auto x: keys) {tree.insert(x,0);}
-
 	tree.commit();
 	std::cout << tree;
-
 	return 0;
 }
