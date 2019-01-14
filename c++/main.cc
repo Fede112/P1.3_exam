@@ -23,7 +23,7 @@ class BinaryTree
 		: keyVal{key, val}, Snode{s}, left{l}, right{r} {}
 
 		Node() = default;
-		~Node() = default;
+		~Node() {std::cout << "Calling destructor of node " << keyVal.first << std::endl;}
 
 		// void display() {std::cout << keyVal.first << " "; }
 	};
@@ -31,7 +31,6 @@ class BinaryTree
 	// pointer to root node of the binary tree
 	// by default it is initialize to nullptr
 	std::unique_ptr<Node> root;
-
 
 	public:
 
@@ -41,66 +40,67 @@ class BinaryTree
 	BinaryTree() = default;
 
 	void insert(const TK& k, const TV& v);
+	void clear(){root.reset();}
 	
 	class Iterator;
-	// Iterator begin() { return Iterator{far_left}; }
+	class ConstIterator;
 	Iterator begin() 
 	{
 		Node * tmp = root.get(); 
 		while (tmp->left.get()) tmp = tmp->left.get();
 		return Iterator{tmp}; 
 	}
-	// Iterator end() { return Iterator{far_right}; }
-	Iterator end()
+	Iterator end(){return Iterator{nullptr};}
+
+	ConstIterator begin() const 
 	{
-		return Iterator{nullptr}; 
+		Node * tmp = root.get(); 
+		while (tmp->left.get()) tmp = tmp->left.get();
+		return ConstIterator{tmp}; 
 	}
+	ConstIterator end() const { return ConstIterator{nullptr}; }
+
 };
 
 template <class TK, class TV>
 class BinaryTree<TK,TV>::Iterator
+{
+	using Node = BinaryTree<TK, TV>::Node;
+	Node* current;
+
+	public:
+	Iterator(Node* n) : current{n} {}
+
+	TK& operator*() const { return current->keyVal.first; }	
+
+	bool operator==(const Iterator& other) { return current == other.current; }
+	bool operator!=(const Iterator& other) { return !(*this == other); }
+
+	Iterator& operator++() 
 	{
-		using Node = BinaryTree<TK, TV>::Node;
-		Node* current;
-
-		public:
-		Iterator(Node* n) : current{n} {}
-
-		TK& operator*() const { return current->keyVal.first; }	
-
-		bool operator==(const Iterator& other) { return current == other.current; }
-		bool operator!=(const Iterator& other) { return !(*this == other); }
-
-		Iterator& operator++() 
-		{
-			// current = next(current);
-			// return *this;
-			if (! (current->right.get() ) ) {current = current->Snode; return *this;}
-			current = current->right.get();
-			while (current->left.get()) {current = current->left.get();}
-			return *this;
-		}
-
-		// Node* next(Node* pnode) // next(const Node* pnode)
-		// {
-		// 	Node* tmp = nullptr;
-
-		// 	if (! (pnode->right.get() ) ) {tmp = pnode->Snode; return tmp;}
-		// 	pnode = pnode->right.get();
-		// 	if ( !(pnode->left.get()) ) {return pnode;}
-		// 	while (pnode->left.get()) {pnode = pnode->left.get();}
-		// 	return pnode;
-		// }
-	};
+		// current = next(current);
+		// return *this;
+		if (! (current->right.get() ) ) {current = current->Snode; return *this;}
+		current = current->right.get();
+		while (current->left.get()) {current = current->left.get();}
+		return *this;
+	}
+};
 
 template <class TK, class TV>
-std::ostream& operator<<(std::ostream& os, BinaryTree<TK, TV>& tree) 
+class BinaryTree<TK,TV>::ConstIterator: public BinaryTree<TK,TV>::Iterator {
+ public:
+  using parent = BinaryTree<TK, TV>::Iterator;
+  using parent::Iterator; // quionda ?? is this for the constructor?
+  // const T& operator*() const { return parent::operator*(); } // quionda why do i need this operator overloaded ?? creo que es para ++(*this)
+};
+
+template <class TK, class TV>
+std::ostream& operator<<(std::ostream& os, const BinaryTree<TK, TV>& tree) 
 {
-	auto it = tree.begin();
-	auto stop = tree.end();
-	for(; it!=stop; ++it)
-	  os << *it << " ";
-	os << std::endl;
+	for (const auto& x : tree) // quionda el const???
+		os << x << " ";
+	std::cout << std::endl;
 	return os;
 }
 
@@ -154,12 +154,13 @@ void BinaryTree<TK, TV>::insert(const TK& k, const TV& v)
 	}
 
 
-
 int main() 
 {
 	BinaryTree<int, int> tree;
 	std::array<int, 9> keys{8, 3, 10, 6, 7, 1, 4, 14, 13};	
 	for (auto x: keys) {tree.insert(x,0);}
 	std::cout << tree;
+	tree.clear();
+	std::cout << "Hoping this is the last print" << std::endl;
 	return 0;
 }
