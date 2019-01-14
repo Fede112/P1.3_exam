@@ -16,10 +16,9 @@ class BinaryTree
 	struct Node 
 	{
 		std::pair <TK,TV> keyVal;
-		Node* Snode;
+		Node* Snode; // std::share_ptr
 		std::unique_ptr<Node> left;
 		std::unique_ptr<Node> right;
-
 
 		Node(const TK& key, const TV& val, Node * s, Node * l, Node * r) 
 		: keyVal{key, val}, Snode{s}, left{l}, right{r} {}
@@ -28,18 +27,6 @@ class BinaryTree
 		~Node() = default;
 
 		void display() {std::cout << keyVal.first << " "; }
-
-		Node* next(Node* pnode)
-		{
-			Node* tmp = nullptr;
-
-			if (! (pnode->right.get() ) ) {tmp = pnode->Snode; return tmp;	}
-			pnode = pnode->right.get();
-			if ( !(pnode->left.get()) ) {return pnode;}
-			while (pnode->left.get()) {pnode = pnode->left.get();}
-			return pnode;
-		}
-
 	};
 
 
@@ -69,15 +56,11 @@ class BinaryTree
 	Node* return_far_left() {return far_left;}
 	Node* return_far_right() {return far_right;}
 
-	void creat_origin_node(const TK& k, const TV& v) 
-	{
-		root.reset(new Node{k, v, nullptr, nullptr, nullptr});
-		return;      		
-	}
 
 	void insert(const TK& k, const TV& v) 
 	{
-		if (root == nullptr) {creat_origin_node(k, v);}
+		if (root == nullptr)
+			root.reset(new Node{k, v, nullptr, nullptr, nullptr});
 
 		insertDir dir = insertDir::left_dir; 
 
@@ -85,12 +68,13 @@ class BinaryTree
 		Node* tmpB = nullptr;
 		Node* Snode = nullptr;
 
-		while (tmpA != nullptr)
+		while (tmpA != nullptr )
 		{
 			tmpB = tmpA;
 
 			if (k < tmpA->keyVal.first)
 			{
+				// Snode = tmpA;
 				tmpA = tmpA->left.get();
 				dir = insertDir::left_dir;
 				Snode = tmpB;
@@ -113,7 +97,7 @@ class BinaryTree
 				tmpB->left.reset(new Node{k, v, Snode, nullptr, nullptr});   
 				break;
 			case insertDir::right_dir:
-				tmpB->right.reset(new Node{k, v, Snode, nullptr, nullptr});   
+				tmpB->right.reset(new Node{k, v, Snode, nullptr, nullptr}); 
 				break;
 			default:
 				throw std::runtime_error{"unknown direction\n"};
@@ -121,11 +105,26 @@ class BinaryTree
 	}
 
 	class Iterator;
-	Iterator begin() { return Iterator{far_left}; }
-	Iterator end() { return Iterator{far_right}; }
-
-	class Iterator
+	// Iterator begin() { return Iterator{far_left}; }
+	Iterator begin() 
 	{
+		Node * tmp = root.get(); 
+		while (tmp->left.get()) tmp = tmp->left.get();
+		return Iterator{tmp}; 
+	}
+	// Iterator end() { return Iterator{far_right}; }
+	Iterator end()
+	{
+		Node * tmp = root.get(); 
+		while (tmp->right.get()) tmp = tmp->right.get();
+		return Iterator{tmp}; 
+	}
+};
+
+template <class TK, class TV>
+class BinaryTree<TK,TV>::Iterator
+	{
+		using Node = BinaryTree<TK, TV>::Node;
 		Node* current;
 
 		public:
@@ -138,13 +137,26 @@ class BinaryTree
 
 		Iterator& operator++() 
 		{
-			current = current->next(current);
+			// current = next(current);
+			// return *this;
+			if (! (current->right.get() ) ) {current = current->Snode; return *this;}
+			current = current->right.get();
+			while (current->left.get()) {current = current->left.get();}
 			return *this;
 		}
 
+		// Node* next(Node* pnode) // next(const Node* pnode)
+		// {
+		// 	Node* tmp = nullptr;
+
+		// 	if (! (pnode->right.get() ) ) {tmp = pnode->Snode; return tmp;}
+		// 	pnode = pnode->right.get();
+		// 	if ( !(pnode->left.get()) ) {return pnode;}
+		// 	while (pnode->left.get()) {pnode = pnode->left.get();}
+		// 	return pnode;
+		// }
 	};
 
-};
 
 
 template <class TK, class TV>
@@ -164,7 +176,7 @@ int main()
 	BinaryTree<int, int> tree;
 	std::array<int, 9> keys{8, 3, 10, 6, 7, 1, 4, 14, 13};	
 	for (auto x: keys) {tree.insert(x,0);}
-	tree.commit();
+	// tree.commit();
 	std::cout << tree;
 	return 0;
 }
