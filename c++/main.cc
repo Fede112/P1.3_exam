@@ -24,7 +24,7 @@ class BinaryTree
 		Node() = default;
 		~Node() {std::cout << "Calling destructor of node " << keyVal.first << std::endl;}
 
-		// void display() {std::cout << keyVal.first << " "; }
+		void display() {std::cout << keyVal.first << " "; }
 	};
 
 	// pointer to root node of the binary tree
@@ -63,17 +63,30 @@ class BinaryTree
 	void insert(const TK& k, const TV& v);
 	void clear(){root.reset(); treeSize=0;}
 	std::size_t checkSize() const {return treeSize;}
-	void balance(BinaryTree<TK, TV>& balanceTree, BinaryTree<TK,TV>::Iterator begin, std::size_t locSize)
-	{	
-		BinaryTree<TK,TV>::Iterator tmp{begin};
-		std::size_t median;
-		median = locSize/2 + 1;
-		std::cout << "entre!" << std::endl;
+	// void balance(BinaryTree<TK, TV>& balanceTree, BinaryTree<TK,TV>::Iterator begin, std::size_t locSize)
+	// {	
+	// 	BinaryTree<TK,TV>::Iterator tmp{begin};
+	// 	std::size_t median;
+	// 	median = locSize/2 + 1;
+	// 	std::cout << "entre!" << std::endl;
 		
-		for(std::size_t i = 1; i < median; ++i)
-			++begin;
-		balanceTree.insert((*begin).first, (*begin).second);
-		std::cout << (*begin).first << std::endl;
+	// 	for(std::size_t i = 1; i < median; ++i)
+	// 		++begin;
+	// 	balanceTree.insert((*begin).first, (*begin).second);
+	// 	std::cout << (*begin).first << std::endl;
+	// }
+
+
+	Iterator find(const TK& k) const
+	{
+		Iterator it = begin();
+		Iterator stop = end();
+		for (; it!=stop; ++it) {if (k == (*it).first) return it;}
+		return stop;
+
+		// Node * tmp = root.get(); 
+		// return Iterator{tmp};
+
 	}
 };
 
@@ -85,8 +98,6 @@ class BinaryTree<TK,TV>::Iterator
 
 	public:
 	Iterator(Node* n) : current{n} {}
-	// copy constructor for iterator (shallow copy)
-	Iterator(const Iterator&);
 
 	std::pair<TK,TV>& operator*() const { return current->keyVal; }	
 	// TK& operator*() const { return current->keyVal.first; }	
@@ -183,9 +194,18 @@ int main()
 	BinaryTree<int, int> tree;
 	std::array<int, 10> keys{8, 3, 10, 6, 6, 7, 1, 4, 14, 13};	
 	for (auto x: keys) {tree.insert(x,1);}
-	BinaryTree<int, int> balanceTree;
-	tree.balance(balanceTree, tree.begin(), tree.checkSize());
+	
+	auto look1 = tree.find(4);
+	auto look2 = tree.find(5);
+	auto stop = tree.end();
 
+	std::cout << "Looking for 4: ";
+	std::cout << (look1 != stop) << std::endl;
+	std::cout << "Looking for 5: " ;
+	std::cout << (look2 != stop) << std::endl;
+	
+	BinaryTree<int, int> balanceTree;
+	// tree.balance(balanceTree, tree.begin(), tree.checkSize());
 	std::cout << tree;
 	std::cout << "tree size: " << tree.checkSize() << std::endl;
 	tree.clear();
