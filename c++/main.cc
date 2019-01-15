@@ -68,6 +68,7 @@ class BinaryTree
 	void insert(const TK& k, const TV& v);
 	void clear(){root.reset(); treeSize=0;}
 	std::size_t checkSize() const {return treeSize;}
+
 	void balance(BinaryTree<TK, TV>& balanceTree, BinaryTree<TK,TV>::Iterator begin, std::size_t locSize)
 	{	
 		if (locSize == 1) {balanceTree.insert((*begin).first, (*begin).second); return;}
@@ -87,10 +88,17 @@ class BinaryTree
 		if (locSize_R == 0) {return;}
 		balance(balanceTree, ++tmp, locSize_R);
 	}
+
+	Iterator find(const TK& k) const
+	{
+		Iterator it = begin();
+		for (; it!=end(); ++it) {if (k == (*it).first) return it;}
+		return end();
+	}
 };
 
-template <class TK, class TV>
-BinaryTree<TK,TV>::BinaryTree(const BinaryTree<TK, TV>&)
+// template <class TK, class TV>
+// BinaryTree<TK,TV>::BinaryTree(const BinaryTree<TK, TV>&)
 
 template <class TK, class TV>
 class BinaryTree<TK,TV>::Iterator
@@ -100,7 +108,6 @@ class BinaryTree<TK,TV>::Iterator
 
 	public:
 	Iterator(Node* n) : current{n} {}
-	
 
 	std::pair<TK,TV>& operator*() const { return current->keyVal; }	
 	// TK& operator*() const { return current->keyVal.first; }	
@@ -198,11 +205,18 @@ int main()
 	std::array<int, 9> keys{1,2,3,4,5,6,7,8,9};	
 	// std::array<int, 3> keys{1, 2, 3};	
 	for (auto x: keys) {tree.insert(x,1);}
+	
+	auto look1 = tree.find(4);
+	auto look2 = tree.find(5);
+	auto stop = tree.end();
 
-	BinaryTree<int, int> test {tree};
+	std::cout << "Looking for 4: ";
+	std::cout << (look1 != stop) << std::endl;
+	std::cout << "Looking for 5: " ;
+	std::cout << (look2 != stop) << std::endl;
+	
 	BinaryTree<int, int> balanceTree;
 	tree.balance(balanceTree, tree.begin(), tree.checkSize());
-
 	std::cout << tree;
 	std::cout << "tree size: " << tree.checkSize() << std::endl;
 	std::cout << "balance tree size: " << balanceTree.checkSize() << std::endl;
