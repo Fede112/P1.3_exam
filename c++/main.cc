@@ -80,13 +80,8 @@ class BinaryTree
 	Iterator find(const TK& k) const
 	{
 		Iterator it = begin();
-		Iterator stop = end();
-		for (; it!=stop; ++it) {if (k == (*it).first) return it;}
-		return stop;
-
-		// Node * tmp = root.get(); 
-		// return Iterator{tmp};
-
+		for (; it!=end(); ++it) {if (k == (*it).first) return it;}
+		return end();
 	}
 };
 
