@@ -23,8 +23,11 @@ class BinaryTree
 
 		Node() = default;
 		~Node() {std::cout << "Calling destructor of node " << keyVal.first << std::endl;}
-
-		// void display() {std::cout << keyVal.first << " "; }
+		// void print_node() // sada
+		// {
+		// 	if(left){std::cout << "k: " << keyVal.first << " l: " << left->keyVal.first << std::endl;}
+		// 	if(right){std::cout << "k: " << keyVal.first << " r: " << right->keyVal.first << std::endl;}
+		// }
 	};
 
 	// pointer to root node of the binary tree
@@ -39,6 +42,8 @@ class BinaryTree
 
 	// BinaryTree() = default;
 	BinaryTree(): treeSize{0} {std::cout << "tree size " << treeSize << std::endl;}
+	// Copy Constructor
+	BinaryTree(const BinaryTree<TK, TV>&);
 
 
 	
@@ -65,17 +70,27 @@ class BinaryTree
 	std::size_t checkSize() const {return treeSize;}
 	void balance(BinaryTree<TK, TV>& balanceTree, BinaryTree<TK,TV>::Iterator begin, std::size_t locSize)
 	{	
-		BinaryTree<TK,TV>::Iterator tmp{begin};
+		if (locSize == 1) {balanceTree.insert((*begin).first, (*begin).second); return;}
+		
+		BinaryTree<TK,TV>::Iterator tmp{begin}; // shallow copy constructor of Iterator
 		std::size_t median;
+		std::size_t locSize_L;
+		std::size_t locSize_R;
 		median = locSize/2 + 1;
 		std::cout << "entre!" << std::endl;
-		
 		for(std::size_t i = 1; i < median; ++i)
-			++begin;
-		balanceTree.insert((*begin).first, (*begin).second);
-		std::cout << (*begin).first << std::endl;
+			++tmp;
+		balanceTree.insert((*tmp).first, (*tmp).second);
+		locSize_L = median - 1;
+		locSize_R = median -1 - (1 - locSize%2);
+		balance(balanceTree, begin, locSize_L);
+		if (locSize_R == 0) {return;}
+		balance(balanceTree, ++tmp, locSize_R);
 	}
 };
+
+template <class TK, class TV>
+BinaryTree<TK,TV>::BinaryTree(const BinaryTree<TK, TV>&)
 
 template <class TK, class TV>
 class BinaryTree<TK,TV>::Iterator
@@ -85,8 +100,7 @@ class BinaryTree<TK,TV>::Iterator
 
 	public:
 	Iterator(Node* n) : current{n} {}
-	// copy constructor for iterator (shallow copy)
-	Iterator(const Iterator&);
+	
 
 	std::pair<TK,TV>& operator*() const { return current->keyVal; }	
 	// TK& operator*() const { return current->keyVal.first; }	
@@ -96,8 +110,7 @@ class BinaryTree<TK,TV>::Iterator
 
 	Iterator& operator++() 
 	{
-		// current = next(current);
-		// return *this;
+		// if(current){current->print_node();} // sada
 		if (! (current->right.get() ) ) {current = current->Snode; return *this;}
 		current = current->right.get();
 		while (current->left.get()) {current = current->left.get();}
@@ -110,7 +123,7 @@ class BinaryTree<TK,TV>::ConstIterator: public BinaryTree<TK,TV>::Iterator {
  public:
   using parent = BinaryTree<TK, TV>::Iterator;
   using parent::Iterator; // quionda ?? is this for the constructor?
-  // const T& operator*() const { return parent::operator*(); } // quionda why do i need this operator overloaded ?? creo que es para ++(*this)
+  // const T& operator*() const { return parent::operator*(); } // quionda why do i need this operator overloaded ?? creo que es para (*this)++
 };
 
 template <class TK, class TV>
@@ -181,13 +194,18 @@ void BinaryTree<TK, TV>::insert(const TK& k, const TV& v)
 int main() 
 {
 	BinaryTree<int, int> tree;
-	std::array<int, 10> keys{8, 3, 10, 6, 6, 7, 1, 4, 14, 13};	
+	// std::array<int, 9> keys{8, 3, 10, 6, 7, 1, 4, 14, 13};	
+	std::array<int, 9> keys{1,2,3,4,5,6,7,8,9};	
+	// std::array<int, 3> keys{1, 2, 3};	
 	for (auto x: keys) {tree.insert(x,1);}
+
+	BinaryTree<int, int> test {tree};
 	BinaryTree<int, int> balanceTree;
 	tree.balance(balanceTree, tree.begin(), tree.checkSize());
 
 	std::cout << tree;
 	std::cout << "tree size: " << tree.checkSize() << std::endl;
+	std::cout << "balance tree size: " << balanceTree.checkSize() << std::endl;
 	tree.clear();
 	std::cout << "tree size after clear: " << tree.checkSize() << std::endl;
 	std::cout << "Hoping this is the last print" << std::endl;
