@@ -36,8 +36,6 @@ class BinaryTree
 		// }
 	};
 
-
-
 	// pointer to root node of the binary tree
 	// by default it is initialize to nullptr
 	std::unique_ptr<Node> root;
@@ -53,6 +51,7 @@ class BinaryTree
 	
 	// Copy constructor
 	BinaryTree(const BinaryTree&);
+	
 	// Copy assignment
 	BinaryTree& operator=(const BinaryTree& v);
 
@@ -94,7 +93,6 @@ class BinaryTree
 		std::size_t locSize_L;
 		std::size_t locSize_R;
 		median = locSize/2 + 1;
-		std::cout << "entre!" << std::endl;
 		for(std::size_t i = 1; i < median; ++i)
 			++tmp;
 		balanceTree.insert((*tmp).first, (*tmp).second);
@@ -140,11 +138,12 @@ BinaryTree<TK,TV>& BinaryTree<TK,TV>::operator=(const BinaryTree<TK, TV>& bt)
 	return *this;
 }
 
+// Move Semantics ////////////////////////////////////////////
 // move ctor
 template <class TK, class TV>
-BinaryTree<TK, TV>::BinaryTree(BinaryTree&& bt) noexcept
+BinaryTree<TK, TV>::BinaryTree(BinaryTree&& bt) noexcept // move semantics cannot throw exceptions because objects are already allocated
   : root{std::move(bt.root)}, treeSize{std::move(bt.treeSize)} {
-  	bt.treeSize = 0; // quionda : std::move of std::size_t doesnt set bt.treeSize=0. Using bt.root gives error, correct?
+  	bt.treeSize = 0;
 	std::cout << "move ctor: " << bt.treeSize << std::endl;
 }
 
@@ -156,9 +155,11 @@ BinaryTree<TK, TV>& BinaryTree<TK, TV>::operator=(BinaryTree&& bt) noexcept
 	std::cout << "move assignment\n";
 	treeSize = std::move(bt.treeSize);
 	root = std::move(bt.root);
+	bt.treeSize = 0;
 	return *this;
 }
 
+////////////////////////////////////////////////////////////////
 
 // aux function for copy ctr
 template <class TK, class TV>
@@ -313,3 +314,6 @@ int main()
 	std::cout << "Hoping this is the last print" << std::endl;
 	return 0;
 }
+
+
+//
