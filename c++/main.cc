@@ -1,8 +1,12 @@
-#include <iostream> // std::cout
-#include <memory> // unique_ptr
-#include <stdexcept> // std::runtime_error
-#include <utility> // std::pair
+#include <stdlib.h>		// atoi 
+#include <iostream> 	// std::cout
+#include <utility>		// std::pair
+#include <stdexcept>	// std::runtime_error
+#include <memory>		// unique_ptr
+#include <chrono>
+#include <vector>
 #include <array>
+#include <map>
 
 enum class insertDir { left_dir, right_dir };
 
@@ -28,7 +32,8 @@ class BinaryTree
 		: keyVal{kV}, ppNode{s}, left{l}, right{r} {}
 
 		Node() = default;
-		~Node() {std::cout << "Calling destructor of node " << keyVal.first << std::endl;}
+		// ~Node() {std::cout << "Calling destructor of node " << keyVal.first << std::endl;}
+		~Node() {}
 		// void print_node() // sada
 		// {
 		// 	if(left){std::cout << "k: " << keyVal.first << " l: " << left->keyVal.first << std::endl;}
@@ -218,7 +223,7 @@ std::ostream& operator<<(std::ostream& os, const BinaryTree<TK, TV>& tree)
 
 template <class TK, class TV>
 void BinaryTree<TK, TV>::insert(const TK& k, const TV& v) 
-	{
+{
 		using Node = BinaryTree<TK, TV>::Node;
 		treeSize ++;
 		if (root == nullptr)
@@ -269,11 +274,11 @@ void BinaryTree<TK, TV>::insert(const TK& k, const TV& v)
 				treeSize--;
 				throw std::runtime_error{"unknown direction\n"};
 		};
-	}
+}
 
-
-int main() 
+int main(int argc, char const *argv[])
 {
+
 	BinaryTree<int, int> tree;
 	BinaryTree<int, int> test;
 	std::array<int, 9> keys_1{8, 3, 10, 6, 7, 1, 4, 14, 13};	
@@ -311,8 +316,45 @@ int main()
 	// std::cout << "balance tree size: " << balanceTree.checkSize() << std::endl;
 	toto.clear();
 	// std::cout << "tree size after clear: " << tree.checkSize() << std::endl;
-	std::cout << "Hoping this is the last print" << std::endl;
+	// std::cout << "Hoping this is the last print" << std::endl;
+
+
+	const std::size_t N = atoi(argv[1]);
+	std::size_t lookFor = N/2;
+	using namespace std::chrono;
+	using time_point = steady_clock::time_point;
+
+	BinaryTree<int, int> nonBalanced_bigTree, balanced_bigTree;
+	std::map<int,int> std_map;
+
+	std::vector<int> aLotOfKeys;	
+	for (std::size_t i=0; i<N; ++i) {aLotOfKeys.push_back(N-i);}
+	for (auto x: aLotOfKeys) { nonBalanced_bigTree.insert(x,1); std_map.insert( std::pair<int,int>(x,0) ); }
+	
+	nonBalanced_bigTree.balance(balanced_bigTree, nonBalanced_bigTree.begin(), nonBalanced_bigTree.checkSize());
+
+	
+	time_point begin1 = steady_clock::now();
+	auto found_at1 = nonBalanced_bigTree.find(lookFor);
+	time_point end1= steady_clock::now();
+
+	time_point begin2 = steady_clock::now();
+	auto found_at2 = balanced_bigTree.find(lookFor);
+	time_point end2= steady_clock::now();
+	
+	time_point begin3 = steady_clock::now();
+	auto found_at3 = std_map.find(lookFor);
+	time_point end3= steady_clock::now();
+
+	std::cout << N << " " << duration_cast<nanoseconds> (end1 - begin1).count();
+	std::cout << " " << duration_cast<nanoseconds> (end2 - begin2).count();
+	std::cout << " " << duration_cast<nanoseconds> (end3 - begin3).count() <<std::endl;
+
+
+
 	return 0;
+
+
 }
 
 
