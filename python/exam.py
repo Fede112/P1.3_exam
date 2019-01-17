@@ -25,12 +25,20 @@ class PostcardList():
 		return len(self._postcards)
 
 	def _parsePostcards(self):
-		for record, pc in enumerate(self._postcards[len(_date):self.getNumberOfPostcards()]):
+		for record, pc in enumerate(self._postcards[len(self._date):self.getNumberOfPostcards()]):
 			# print(pc.split(';')[0].split(':')[1])
-			record += len(_date)
-			self._date[ pc.split(';')[0].split(':')[1] ] = record
-			self._from[ pc.split(';')[1].split(':')[1] ] = record
-			self._to[ pc.split(';')[2].split(':')[1] ] = record
+			record += len(self._date)
+			# key_date = pc.split(';')[0].split(':')[1]
+			# key_from = pc.split(';')[1].split(':')[1]
+			# key_to = pc.split(';')[2].split(':')[1]
+			# if(self_date.get(key_date, 0)):
+			# 	self._date[ pc.split(';')[0].split(':')[1] ] = record
+			# self._date[ pc.split(';')[0].split(':')[1] ].append(record)		
+			# self._from[ pc.split(';')[1].split(':')[1] ].append(record)
+			# self._to[ pc.split(';')[2].split(':')[1] ].append(record)
+			self._date[ pc.split(';')[0].split(':')[1] ] = (record)		
+			self._from[ pc.split(';')[1].split(':')[1] ] = (record)
+			self._to[ pc.split(';')[2].split(':')[1] ] = (record)
 		
 	def writeFile(self, file_path):
 		'''
@@ -44,7 +52,8 @@ class PostcardList():
 							d=date, f=fromm, t=to)
 				file.write(line)
 
-
+	def getPostcardsByDateRange(self): # returns the postcards within a date_range
+		print(sorted(self._date))
 
 if __name__ == '__main__':
 
@@ -62,6 +71,7 @@ if __name__ == '__main__':
 	postL._parsePostcards()
 	print(postL._date)
 	postL.writeFile("./test.txt")
+	postL.getPostcardsByDateRange()
 	print(postL._file)
 	print(postL._postcards)
 	print(numberOfPostcards)
