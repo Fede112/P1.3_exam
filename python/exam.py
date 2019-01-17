@@ -15,11 +15,19 @@ class PostcardList():
 	def readFile(self, file_path):
 		self._file = file_path
 		with open(file_path) as file: 
-			for postcard in file:  
-				self._postcards.append(postcard)
+			for pc in file:  
+				self._postcards.append(pc)
 
 	def getNumberOfPostcards(self):
 		return len(self._postcards)
+
+	def _parsePostcards(self):
+		for record, pc in enumerate(self._postcards):
+			# print(pc.split(';')[0].split(':')[1])
+			self._date[ pc.split(';')[0].split(':')[1] ] = record
+			self._from[ pc.split(';')[1].split(':')[1] ] = record
+			self._to[ pc.split(';')[2].split(':')[1] ] = record
+
 
 
 
@@ -35,6 +43,7 @@ if __name__ == '__main__':
 
 	numberOfPostcards = postL.getNumberOfPostcards()
 
-	print(postL._file)
-	print(postL._postcards)
+	# print(postL._postcards)
+	postL._parsePostcards()
+	print(postL._date)
 	print(numberOfPostcards)
