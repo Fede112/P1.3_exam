@@ -33,7 +33,7 @@ if __name__ == '__main__':
 	postL = PostcardList()
 	postL.readFile(file_path)
 
-	numberOfPostcards = postL.getNumberOfPostcards
+	numberOfPostcards = postL.getNumberOfPostcards()
 
 	print(postL._file)
 	print(postL._postcards)
