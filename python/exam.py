@@ -19,7 +19,7 @@ class PostcardList():
 		self._file = file_path
 		with open(file_path) as file: 
 			for pc in file:  
-				self._postcards.append(pc)
+				self._postcards.append(pc.rstrip())
 
 	def getNumberOfPostcards(self):
 		return len(self._postcards)

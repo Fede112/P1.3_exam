@@ -1,3 +1,11 @@
-date:2002; from:A; to:D;
-date:2003; from:B; to:E;
-date:2004; from:C; to:F;
+date:2013-09-16; from:Dewey; to:Happy;
+date:2017-03-31; from:Mickey; to:Pluto;
+date:2011-08-24; from:Sneezy; to:Dopey;
+date:2016-10-23; from:Sleepy; to:Hook;
+date:2017-07-28; from:Louie; to:Huey;
+date:2010-06-23; from:Goofy; to:Alice;
+date:2011-08-04; from:Dopey; to:Grumpy;
+date:2014-05-04; from:Bashful; to:Minnie;
+date:2016-04-18; from:Peter; to:Peter;
+date:2009-12-12; from:Daisy; to:Dewey;
+date:2016-05-07; from:Happy; to:$crooge;
