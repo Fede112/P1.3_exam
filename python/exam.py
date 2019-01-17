@@ -17,9 +17,11 @@ class PostcardList():
 
 	def readFile(self, file_path):
 		self._file = file_path
+		self._postcards = []
 		with open(file_path) as file: 
 			for pc in file:  
 				self._postcards.append(pc.rstrip())
+		# self._parsePostcards()
 
 	def getNumberOfPostcards(self):
 		return len(self._postcards)
@@ -43,6 +45,11 @@ class PostcardList():
 							d=date, f=fromm, t=to)
 				file.write(line)
 
+	def getPostcardsBySender(self, sender):
+		pcs = []
+		if sender in self._from.keys():
+			pcs = [pc for i, pc in enumerate(self._postcards) if i in self._from[sender]]
+		return pcs	
 
 
 if __name__ == '__main__':
@@ -61,6 +68,6 @@ if __name__ == '__main__':
 	postL._parsePostcards()
 	print(postL._date)
 	postL.writeFile("./test.txt")
-	print(postL._file)
-	print(postL._postcards)
-	print(numberOfPostcards)
+	# print(postL._file)
+	print(postL._from)
+	print(postL.getPostcardsBySender("Dewey"))
