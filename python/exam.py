@@ -25,8 +25,9 @@ class PostcardList():
 		return len(self._postcards)
 
 	def _parsePostcards(self):
-		for record, pc in enumerate(self._postcards):
+		for record, pc in enumerate(self._postcards[len(_date):self.getNumberOfPostcards()]):
 			# print(pc.split(';')[0].split(':')[1])
+			record += len(_date)
 			self._date[ pc.split(';')[0].split(':')[1] ] = record
 			self._from[ pc.split(';')[1].split(':')[1] ] = record
 			self._to[ pc.split(';')[2].split(':')[1] ] = record
