@@ -1,0 +1,3 @@
+date:2002; from:A; to:D;
+date:2003; from:B; to:E;
+date:2004; from:C; to:F;
