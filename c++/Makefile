@@ -14,9 +14,14 @@ all: $(EXE)
 debug: CXXFLAGS += $(DEBUG)
 debug: all
 
+benchmark:
+	./runner.sh
+
+plot:
+	./plotter.sh
 
 clean:
-	rm -rf *~ $(EXE)
+	rm -rf *~ $(EXE) *.png
 
 .PHONY: clean all debug
 

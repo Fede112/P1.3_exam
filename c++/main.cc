@@ -52,7 +52,8 @@ class BinaryTree
 	friend std::ostream& operator<<(std::ostream&, const BinaryTree<otk, otv>&);
 
 	// BinaryTree() = default;
-	BinaryTree(): treeSize{0} {std::cout << "tree size " << treeSize << std::endl;}
+	// BinaryTree(): treeSize{0} {std::cout << "tree size " << treeSize << std::endl;}
+	BinaryTree(): treeSize{0} {}
 	
 	// Copy constructor
 	BinaryTree(const BinaryTree&);
@@ -135,7 +136,7 @@ BinaryTree<TK,TV>& BinaryTree<TK,TV>::operator=(const BinaryTree<TK, TV>& bt)
 	(*this).clear();              // first of all clean my memory
 	auto tmp = bt;              // then use copy ctor
 	(*this) = std::move(tmp);  // finally move assignment
-	std::cout << "size of tmp: " << tmp.checkSize() << std::endl;
+	// std::cout << "size of tmp: " << tmp.checkSize() << std::endl;
 
 //   // or we do everything by hand..
 //   // and we can do not reset and call new again if the sizes are suitable
@@ -149,7 +150,7 @@ template <class TK, class TV>
 BinaryTree<TK, TV>::BinaryTree(BinaryTree&& bt) noexcept // move semantics cannot throw exceptions because objects are already allocated
   : root{std::move(bt.root)}, treeSize{std::move(bt.treeSize)} {
   	bt.treeSize = 0;
-	std::cout << "move ctor: " << bt.treeSize << std::endl;
+	// std::cout << "move ctor: " << bt.treeSize << std::endl;
 }
 
 
@@ -295,10 +296,10 @@ int main(int argc, char const *argv[])
 	// std::cout << "Mae, voy a hacer un move de tree" << std::endl;
 	BinaryTree<int, int> toto = std::move(tree);
 	
-	std::cout << "size of tree: " << tree.checkSize() << std::endl;
-	std::cout << tree;
-	std::cout << "size of toto: " << toto.checkSize() << std::endl;
-	std::cout << toto;
+	// std::cout << "size of tree: " << tree.checkSize() << std::endl;
+	// std::cout << tree;
+	// std::cout << "size of toto: " << toto.checkSize() << std::endl;
+	// std::cout << toto;
 	// std::cout << "Mae, tree se destruyo" << std::endl;
 	// auto look1 = tree.find(4);
 	// auto look2 = tree.find(5);
