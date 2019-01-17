@@ -18,6 +18,8 @@ class PostcardList():
 			for postcard in file:  
 				self._postcards.append(postcard)
 
+	def getNumberOfPostcards(self):
+		return len(self._postcards)
 
 
 
@@ -31,4 +33,8 @@ if __name__ == '__main__':
 	postL = PostcardList()
 	postL.readFile(file_path)
 
-	print(postL._file, postL._postcards)
+	numberOfPostcards = postL.getNumberOfPostcards
+
+	print(postL._file)
+	print(postL._postcards)
+	print(numberOfPostcards)
