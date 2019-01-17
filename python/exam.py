@@ -27,12 +27,27 @@ class PostcardList():
 		return len(self._postcards)
 
 	def _parsePostcards(self):
-		for record, pc in enumerate(self._postcards):
-			# print(pc.split(';')[0].split(':')[1])
-			self._date[ pc.split(';')[0].split(':')[1] ] = record
-			self._from[ pc.split(';')[1].split(':')[1] ] = record
-			self._to[ pc.split(';')[2].split(':')[1] ] = record
-		
+		prev_len = len(self._date) 
+
+		for record, pc in enumerate(self._postcards[prev_len:self.getNumberOfPostcards()],1):
+			record += prev_len
+			date_key =  pc.split(';')[0].split(':')[1]
+			from_key = pc.split(';')[1].split(':')[1]
+			to_key = pc.split(';')[2].split(':')[1]
+
+			if date_key not in self._date:
+				self._date[ date_key ] = []
+
+			if from_key not in self._from:
+				self._from[ from_key ] = []
+
+			if to_key  not in self._to:
+				self._to[ to_key ] = []
+
+			self._date[ date_key ].append(record)  
+			self._from[ from_key ].append(record)  
+			self._to[ to_key  ].append(record)   
+			
 	def writeFile(self, file_path):
 		'''
 		def writeFile(self):
@@ -45,29 +60,41 @@ class PostcardList():
 							d=date, f=fromm, t=to)
 				file.write(line)
 
+
 	def getPostcardsBySender(self, sender):
 		pcs = []
 		if sender in self._from.keys():
-			pcs = [pc for i, pc in enumerate(self._postcards) if i in self._from[sender]]
+			pcs = [pc for i, pc in enumerate(self._postcards, 1) if i in self._from[sender]]
 		return pcs	
 
+	def getPostcardsByReceiver(self, receiver):
+		pcs = []
+		if receiver in self._from.keys():
+			pcs = [pc for i, pc in enumerate(self._postcards, 1) if i in self._to[receiver]]
+		return pcs	
+
+	def getPostcardsByDateRange(self): # returns the postcards within a date_range
+		print(sorted(self._date))
 
 if __name__ == '__main__':
 
 	curret_directory = os.getcwd()
 
-	file_name = 'exam_postcard_list0.txt'
+	file_name = 'exam_postcard_list4.txt'
 	file_path = curret_directory + "/" + file_name
 
 	postL = PostcardList()
 	postL.readFile(file_path)
 
 	numberOfPostcards = postL.getNumberOfPostcards()
-
-	# print(postL._postcards)
 	postL._parsePostcards()
-	print(postL._date)
+	# print(postL._postcards)
 	postL.writeFile("./test.txt")
 	# print(postL._file)
-	print(postL._from)
+	# print(postL._from)
 	print(postL.getPostcardsBySender("Dewey"))
+	print(postL.getPostcardsByReceiver("Dewey"))
+	# postL.getPostcardsByDateRange()
+	# print(postL._file)
+	# print(postL._postcards)
+	print(numberOfPostcards)
