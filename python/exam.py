@@ -60,7 +60,6 @@ class PostcardList():
 							d=date, f=fromm, t=to)
 				file.write(line)
 
-
 	def getPostcardsBySender(self, sender):
 		pcs = []
 		if sender in self._from.keys():
@@ -73,8 +72,14 @@ class PostcardList():
 			pcs = [pc for i, pc in enumerate(self._postcards, 1) if i in self._to[receiver]]
 		return pcs	
 
-	def getPostcardsByDateRange(self): # returns the postcards within a date_range
-		print(sorted(self._date))
+	def getPostcardsByDateRange(self, date_ini, date_end): # returns the postcards within a date_range
+		datesInRange = []
+		for key in self._date.keys():
+			datetime_key = datetime.datetime.strptime(key, "%Y-%m-%d") 
+			if ( datetime_key >= date_ini  and  datetime_key <= date_end ):
+				datesInRange += self._date[key]
+		pcInRange = [ self._postcards[i-1] for i in datesInRange ]
+		print(pcInRange)
 
 if __name__ == '__main__':
 
@@ -92,9 +97,9 @@ if __name__ == '__main__':
 	postL.writeFile("./test.txt")
 	# print(postL._file)
 	# print(postL._from)
-	print(postL.getPostcardsBySender("Dewey"))
-	print(postL.getPostcardsByReceiver("Dewey"))
-	# postL.getPostcardsByDateRange()
+	# print(postL.getPostcardsBySender("Dewey"))
+	# print(postL.getPostcardsByReceiver("Dewey"))
+	postL.getPostcardsByDateRange(datetime.datetime.strptime("2010-01-01", "%Y-%m-%d"),datetime.datetime.strptime("2010-10-08", "%Y-%m-%d") )
 	# print(postL._file)
 	# print(postL._postcards)
 	print(numberOfPostcards)
