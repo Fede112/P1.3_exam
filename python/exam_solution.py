@@ -13,28 +13,28 @@ class PostcardList():
 		self._to = {}
 
 	def readFile(self, from_file_path):
-	# def readFile(self):
-		# This function initialize the PostcardList with _file = from_file_path
-		# Only for initialization 
+		'''
+		This function initialize the PostcardList with _file = from_file_path
+		Only for initialization
+		''' 
 		self._file = from_file_path
 		self._postcards = []
 		with open(from_file_path) as file: 
 			for pc in file:  
-				# self._postcards.append(pc.rstrip())
 				self._postcards.append(pc)
 		self.parsePostcards()
 
 
 	def updateLists(self, from_file_path):
-		# Updates object to include new Postcards from another file 
+		'''
+		Updates object to include new Postcards from another file 
+		'''
 		pc_list = []
 		with open(from_file_path) as file: 
 			for pc in file:  
-				# self._postcards.append(pc.rstrip())
 				self._postcards.append(pc)
 				pc_list.append(pc)
 		self.parsePostcards()
-		# print(" Print pc_lists: ")
 		# print(pc_list)
 		self.updateFile(pc_list)
 
