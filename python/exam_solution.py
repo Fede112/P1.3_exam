@@ -20,7 +20,8 @@ class PostcardList():
 		self._postcards = []
 		with open(from_file_path) as file: 
 			for pc in file:  
-				self._postcards.append(pc.rstrip())
+				# self._postcards.append(pc.rstrip())
+				self._postcards.append(pc)
 		self.parsePostcards()
 
 
@@ -87,17 +88,20 @@ class PostcardList():
 	def getPostcardsBySender(self, sender):
 		pcs = []
 		if sender in self._from.keys():
-			pcs = [pc for i, pc in enumerate(self._postcards, 0) if i in self._from[sender]]
+			pcs = [pc for i, pc in enumerate(self._postcards, 0) if i in self._from.get(sender, [-1])]
 		return pcs	
 
 	def getPostcardsByReceiver(self, receiver):
 		pcs = []
 		if receiver in self._from.keys():
-			pcs = [pc for i, pc in enumerate(self._postcards, 0) if i in self._to[receiver]]
+			pcs = [pc for i, pc in enumerate(self._postcards, 0) if i in self._to.get(receiver, [-1])]
 		return pcs	
 
-	def getPostcardsByDateRange(self, date_ini, date_end): # returns the postcards within a date_range
+	def getPostcardsByDateRange(self, date_range): # returns the postcards within a date_range
 		datesInRange = []
+		# date_ini, date_end = date_range
+		date_ini = date_range[0]
+		date_end = date_range[1]
 		for key in self._date.keys():
 			datetime_key = datetime.datetime.strptime(key, "%Y-%m-%d") 
 			if ( datetime_key >= date_ini  and  datetime_key <= date_end ):
@@ -112,14 +116,15 @@ if __name__ == '__main__':
 
 	curret_directory = os.getcwd()
 
-	file_name = 'test0.txt'
+	# file_name = 'test0.txt'
+	file_name = 'exam_postcard_list0.txt'
 	other_file_name = 'test.txt'
 
 	file_path = curret_directory + "/" + file_name
 	other_file_path = curret_directory + "/" + other_file_name
 
 	postL = PostcardList()
-	# postL.readFile(file_path)
+	postL.readFile(file_path)
 	# print("antes \n", postL._from)
 	# postL.updateLists(other_file_path)
 	# print("despues \n", postL._from)
@@ -131,11 +136,11 @@ if __name__ == '__main__':
 	# print(postL._postcards)
 
 	# print(postL._file)
-	# print(postL.getPostcardsBySender("Dewey"))
+	print(postL.getPostcardsBySender("Dewey"))
 	# print(postL.getPostcardsByReceiver("Dewey"))
-	postL.getPostcardsByDateRange(datetime.datetime.strptime("2010-01-01", "%Y-%m-%d"),datetime.datetime.strptime("2010-10-08", "%Y-%m-%d") )
+	# postL.getPostcardsByDateRange(datetime.datetime.strptime("2010-01-01", "%Y-%m-%d"),datetime.datetime.strptime("2010-10-08", "%Y-%m-%d") )
 	# print(postL._file)
-	print(postL._postcards)
+	print(postL._from)
 	print(numberOfPostcards)
 
 	# postL.updateFile(other_file_path)
