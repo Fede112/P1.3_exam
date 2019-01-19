@@ -73,7 +73,7 @@ DAT=.dat
 RAW=.raw
 EXE=main.x
 
-REPETITIONS=4
+REPETITIONS=10
 SIZES=3
 size=10 
 # Compiling ------------------------------------------
