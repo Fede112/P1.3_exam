@@ -73,23 +73,24 @@ class BinaryTree
 	class ConstIterator;
 
 	// begin() and end() function for Iterators/ConstIterators:
-	// To use if we want to allow the user to change the value of a Tree
+	// Used when the user wants to change the value of a Tree using iterators
 	Iterator begin() { std::cout << "Iterator! \n";return Iterator{goLeft()}; }
 	Iterator end(){return Iterator{nullptr};}
 
-	// To use so that the user cannot change the state of a Tree using a reference call to Tree
+	// Used so that the user cannot change the state of a Tree using a reference call to a const Tree
 	ConstIterator begin() const { std::cout << "ConstIterator! \n"; return ConstIterator{goLeft()}; }
 	ConstIterator end() const { return ConstIterator{nullptr}; }
 
-	// To use if we don´t want to change the state of a tree, but we are not using a const Tree 
+	// Used if we don´t want to change the state of a tree, but we are not using a const Tree 
 	ConstIterator cbegin() { std::cout << "ConstIterator! cbegin \n"; return ConstIterator{goLeft()}; }
 	ConstIterator cend() { return ConstIterator{nullptr};}
 
-	// To use if the user calls cbegin on a non const Tree 
+	// To use if the user calls cbegin on a const Tree 
 	// (we allow the user to be lazy and not think about const Tree vs. noConst Tree)
-	ConstIterator cbegin() const { std::cout << "Iterator! cbegin const\n"; return ConstIterator{goLeft()}; }
+	ConstIterator cbegin() const { std::cout << "ConstIterator! cbegin const\n"; return ConstIterator{goLeft()}; }
 	ConstIterator cend() const { return ConstIterator{nullptr};}
 
+	// auxilary function to begin() / end() / cbegin() / cend()
 	Node * goLeft() const
 	{
 		Node * tmp = root.get();
@@ -97,18 +98,23 @@ class BinaryTree
 		return tmp;
 	}
 
+	// Insert new node
 	void insert(const TK& k, const TV& v);
+	// Clear all the nodes in the tree
 	void clear(){root.reset(); treeSize=0;}
+	// Retrieve tree size
 	std::size_t checkSize() const {return treeSize;}
+	// auxilary function of the copy constructor
 	void copy_node(const Node * np);
+	// balance the tree
 	void balance(BinaryTree& balanceTree, Iterator begin, std::size_t locSize);
+	// find key
 	Iterator find(const TK& k) const
 	{
 		Iterator it = begin();
 		for (; it!=end(); ++it) {if (k == (*it).first) return it;}
 		return end();
-	}
-	
+	}	
 };
 
 // Copy semantics /////////////////////////////////////////////
@@ -116,7 +122,7 @@ class BinaryTree
 template <class TK, class TV>
 BinaryTree<TK,TV>::BinaryTree(const BinaryTree<TK, TV>& bt) // quionda : Is <TK,TV> needed?
 {
-	std::cout << "using copy ctor" << std::endl;
+	std::cout << "Copy ctor" << std::endl;
 	copy_node(bt.root.get());
 } 
 
@@ -128,7 +134,7 @@ BinaryTree<TK,TV>& BinaryTree<TK,TV>::operator=(const BinaryTree<TK, TV>& bt)
 	auto tmp = bt;              // then use copy ctor
 	(*this) = std::move(tmp);  // finally move assignment
 
-	std::cout << "size of tmp: " << tmp.checkSize() << std::endl;
+	std::cout << "Copy assignment" << std::endl;
 
 	return *this;
 }
@@ -150,7 +156,7 @@ template <class TK, class TV>
 BinaryTree<TK, TV>::BinaryTree(BinaryTree&& bt) noexcept // move semantics cannot throw exceptions because objects are already allocated
   : root{std::move(bt.root)}, treeSize{std::move(bt.treeSize)} {
   	bt.treeSize = 0;
-	// std::cout << "move ctor: " << bt.treeSize << std::endl;
+	std::cout << "move ctor" << std::endl;
 }
 
 
@@ -158,7 +164,7 @@ BinaryTree<TK, TV>::BinaryTree(BinaryTree&& bt) noexcept // move semantics canno
 template <class TK, class TV>
 BinaryTree<TK, TV>& BinaryTree<TK, TV>::operator=(BinaryTree&& bt) noexcept
 {
-	std::cout << "move assignment\n";
+	std::cout << "move assignment" << std::endl;
 	treeSize = std::move(bt.treeSize);
 	root = std::move(bt.root);
 	bt.treeSize = 0;
@@ -185,7 +191,6 @@ class BinaryTree<TK,TV>::Iterator
 
 	Iterator& operator++() 
 	{
-		// if(current){current->print_node();} // sada
 		if (! (current->right.get() ) ) {current = current->ppNode; return *this;}
 		current = current->right.get();
 		while (current->left.get()) {current = current->left.get();}
@@ -198,7 +203,7 @@ class BinaryTree<TK,TV>::ConstIterator: public BinaryTree<TK,TV>::Iterator {
  public:
   using parent = BinaryTree<TK, TV>::Iterator;
   using parent::Iterator; 
-  // const T& operator*() const { return parent::operator*(); }
+  const std::pair<TK,TV>& operator*() const { return parent::operator*(); }
 };
 
 /////////////////////////////////////////////////////////////////
@@ -207,7 +212,7 @@ template <class TK, class TV>
 std::ostream& operator<<(std::ostream& os, const BinaryTree<TK, TV>& tree) 
 {
 	if(tree.checkSize()==0){return os <<"" << std::endl;}
-	for (const auto& x : tree) 
+	for (const auto& x : tree)
 		os << x.first << ":" << x.second << " ";
 	std::cout << std::endl;
 	return os;
@@ -216,31 +221,26 @@ std::ostream& operator<<(std::ostream& os, const BinaryTree<TK, TV>& tree)
 template <class TK, class TV>
 void BinaryTree<TK, TV>::insert(const TK& k, const TV& v) 
 {
-
 	using Node = BinaryTree<TK, TV>::Node;
 	treeSize ++;
 	if (root == nullptr)
 	{
-		root.reset(new Node{k, v, nullptr, nullptr, nullptr}); // quionda try catch maybe better
+		root.reset(new Node{k, v, root.get(), nullptr, nullptr});
 		return;
 	}
-
-	insertDir dir = insertDir::left_dir; 
-
+	insertDir dir; //= insertDir::left_dir; 
 	Node* tmpA = root.get();
 	Node* tmpB = nullptr;
-	Node* ppNode = nullptr;
-
+	// Node* ppNode = nullptr;
 	while (tmpA != nullptr )
 	{
 		tmpB = tmpA;
-
 		if (k < tmpA->keyVal.first)
 		{
 			// ppNode = tmpA;
 			tmpA = tmpA->left.get();
 			dir = insertDir::left_dir;
-			ppNode = tmpB;
+			// ppNode = tmpB;
 		} 
 		else if (k > tmpA->keyVal.first)
 		{	
@@ -249,20 +249,18 @@ void BinaryTree<TK, TV>::insert(const TK& k, const TV& v)
 		}
 		else 
 		{
-
 			(tmpA->keyVal.second)++;
 			treeSize--;
 			return;
 		}
 	}
-
 	switch (dir)
 	{
 		case insertDir::left_dir:
-			tmpB->left.reset(new Node{k, v, ppNode, nullptr, nullptr});   
+			tmpB->left.reset(new Node{k, v, tmpB, nullptr, nullptr});   
 			break;
 		case insertDir::right_dir:
-			tmpB->right.reset(new Node{k, v, ppNode, nullptr, nullptr}); 
+			tmpB->right.reset(new Node{k, v, tmpB->ppNode, nullptr, nullptr}); 
 			break;
 		default:
 			treeSize--;
@@ -295,24 +293,69 @@ void BinaryTree<TK, TV>::balance(BinaryTree<TK, TV>& balanceTree, BinaryTree<TK,
 int main(int argc, char const *argv[])
 {
 
-	BinaryTree<int, int> tree;
-	BinaryTree<int, int> test;
+	BinaryTree<int, int> test1;
+	BinaryTree<int, int> test2;
+
 	std::array<int, 9> keys_1{8, 3, 10, 6, 7, 1, 4, 14, 13};	
-	// std::array<int, 9> keys_2{1,2,3,4,5,6,7,8,9};
-	// std::array<int, 3> keys{1, 2, 3};	
-	for (auto x: keys_1) {tree.insert(x,1);}
-	// for (auto x: keys_2) {test.insert(x,1);}
+	for (auto x: keys_1) {test1.insert(x,1);}
+	// Random tree
+	for (int i = 0; i < 7; ++i)
+	{
+		test2.insert(rand()%100,1);
+	}
 
+	/////////////////////////////////////////////////////////////////
+	// COPY AND MOVE SEMANTICS TEST
+	std::cout << "\nBegin copy and move semantics tests ...\n" << std::endl;
 
+	BinaryTree<int, int> test_copy_asg;
+	BinaryTree<int, int> test_move_asg;
 
+	BinaryTree<int, int> test_copy_ctr{test1};
+	std::cout << test_copy_ctr;
+	test_copy_asg = test1;
+	std::cout << test_copy_asg;
+	BinaryTree<int, int> test_move_ctr = std::move(test1);
+	std::cout << test_move_ctr;
+	test_move_asg = test_move_ctr;
+	std::cout << test_move_asg;
+	
+	std::cout << "\nCompleted copy and move semantics tests ..." << std::endl;
+	/////////////////////////////////////////////////////////////////
+	
 
-	// BinaryTree<int, int> test{tree};
-	// std::cout << "Mae, voy a hacer una deep copy de tree" << std::endl;
-	// test = tree;
+	/////////////////////////////////////////////////////////////////
+	std::cout << "\nBegin Iterators tests ...\n" << std::endl;
+	// ITERATORS TEST
+	// trying constIterator threw operator<<(std::ostream& os, const BinaryTree<TK, TV>& tree)
+	std::cout << test2;
+
+	// trying Iterators
+	auto it = test2.begin();
+	auto stop = test2.end();
+	for(; it!=stop; ++it)
+	{
+		std::cout << (*it).first << " ";
+	  	(*it).second = 2;
+	}
+	std::cout << std::endl;
+	std::cout << test2;
+
+	// trying cbegin and cend
+	auto c_it = test2.cbegin();
+	auto c_stop = test2.cend();
+	for(; c_it!=c_stop; ++c_it)
+	{
+		std::cout << (*c_it).first << " ";
+	//   (*c_it) = std::pair<int,int>(1,1);  // Error because it uses cbegin!
+	}
+	std::cout << std::endl;
+	
+	std::cout << "\nCompleted Iterators tests ..." << std::endl;
+	/////////////////////////////////////////////////////////////////
+
 	
 	// std::cout << tree;
-	// std::cout << "Mae, voy a hacer un move de tree" << std::endl;
-	BinaryTree<int, int> toto = std::move(tree);
 	
 	// std::cout << "size of tree: " << tree.checkSize() << std::endl;
 	// std::cout << tree;
@@ -333,48 +376,43 @@ int main(int argc, char const *argv[])
 	// std::cout << tree;
 	// std::cout << "tree size: " << tree.checkSize() << std::endl;
 	// std::cout << "balance tree size: " << balanceTree.checkSize() << std::endl;
-	toto.clear();
+	// toto.clear();
 	// std::cout << "tree size after clear: " << tree.checkSize() << std::endl;
 	// std::cout << "Hoping this is the last print" << std::endl;
 
 
-	const std::size_t N = atoi(argv[1]);
-	std::size_t lookFor = N/2;
-	using namespace std::chrono;
-	using time_point = steady_clock::time_point;
+	// const std::size_t N = atoi(argv[1]);
+	// std::size_t lookFor = N/2;
+	// using namespace std::chrono;
+	// using time_point = steady_clock::time_point;
 
-	BinaryTree<int, int> nonBalanced_bigTree, balanced_bigTree;
-	std::map<int,int> std_map;
+	// BinaryTree<int, int> nonBalanced_bigTree, balanced_bigTree;
+	// std::map<int,int> std_map;
 
-	std::vector<int> aLotOfKeys;	
-	for (std::size_t i=0; i<N; ++i) {aLotOfKeys.push_back(N-i);}
-	for (auto x: aLotOfKeys) { nonBalanced_bigTree.insert(x,1); std_map.insert( std::pair<int,int>(x,0) ); }
+	// std::vector<int> aLotOfKeys;	
+	// for (std::size_t i=0; i<N; ++i) {aLotOfKeys.push_back(N-i);}
+	// for (auto x: aLotOfKeys) { nonBalanced_bigTree.insert(x,1); std_map.insert( std::pair<int,int>(x,0) ); }
 	
-	nonBalanced_bigTree.balance(balanced_bigTree, nonBalanced_bigTree.begin(), nonBalanced_bigTree.checkSize());
+	// nonBalanced_bigTree.balance(balanced_bigTree, nonBalanced_bigTree.begin(), nonBalanced_bigTree.checkSize());
 
 	
-	time_point begin1 = steady_clock::now();
-	auto found_at1 = nonBalanced_bigTree.find(lookFor);
-	time_point end1= steady_clock::now();
+	// time_point begin1 = steady_clock::now();
+	// auto found_at1 = nonBalanced_bigTree.find(lookFor);
+	// time_point end1= steady_clock::now();
 
-	time_point begin2 = steady_clock::now();
-	auto found_at2 = balanced_bigTree.find(lookFor);
-	time_point end2= steady_clock::now();
+	// time_point begin2 = steady_clock::now();
+	// auto found_at2 = balanced_bigTree.find(lookFor);
+	// time_point end2= steady_clock::now();
 	
-	time_point begin3 = steady_clock::now();
-	auto found_at3 = std_map.find(lookFor);
-	time_point end3= steady_clock::now();
+	// time_point begin3 = steady_clock::now();
+	// auto found_at3 = std_map.find(lookFor);
+	// time_point end3= steady_clock::now();
 
-	std::cout << N << " " << duration_cast<nanoseconds> (end1 - begin1).count();
-	std::cout << " " << duration_cast<nanoseconds> (end2 - begin2).count();
-	std::cout << " " << duration_cast<nanoseconds> (end3 - begin3).count() <<std::endl;
-
-
+	// std::cout << N << " " << duration_cast<nanoseconds> (end1 - begin1).count();
+	// std::cout << " " << duration_cast<nanoseconds> (end2 - begin2).count();
+	// std::cout << " " << duration_cast<nanoseconds> (end3 - begin3).count() <<std::endl;
 
 	return 0;
-
-
 }
 
 
-//
