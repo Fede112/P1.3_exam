@@ -8,30 +8,39 @@
 #include <array>
 #include <map>
 
-enum class insertDir { left_dir, right_dir };
 
+/*! \brief A binary tree class to store data.
+ *
+ *  The class is templated in both the Key and the Value.
+ *	At the moment it only handles key types which have operations: ==, <, > defined.
+ */
 template <class TK, class TV>
 class BinaryTree 
 {
-	// Elements from nested class are 
-	// not visible from the container class. 
-	// That's why we choose structs.	
+	// Elements from nested class are not visible from the container class. That's why we choose structs.
+	/*! \brief A struct that contains the data of each node in the BinaryTree.
+	*
+	* 	We choose a struct so that elements its members are visible from the container class.
+	*/
 	struct Node 
 	{
-		std::pair <TK,TV> keyVal;
-		Node* ppNode; // std::share_ptr
-		std::unique_ptr<Node> left;
-		std::unique_ptr<Node> right;
+		std::pair <TK,TV> keyVal; /*!< stores the key and value of the node. */
+		Node* ppNode; /*!< Pointer to the proper parent of the node. This is, the node which key is next in the tree (Increasing key order) */
+		std::unique_ptr<Node> left;	/*!< Unique pointer to the left node from *this node */
+		std::unique_ptr<Node> right; /*!< Unique pointer to the right node from *this node */
 		
-		// constructor that takes key and value separately
+		/** Constructor that takes key and value separately. */
 		Node(const TK& key, const TV& val, Node * s, Node * l, Node * r) 
 		: keyVal{key, val}, ppNode{s}, left{l}, right{r} {}
 		
-		// constructor that takes key and value as std::pair
+		/** Constructor that takes key and value as std::pair */
 		Node(const std::pair <TK,TV> kV , Node * s, Node * l, Node * r) 
 		: keyVal{kV}, ppNode{s}, left{l}, right{r} {}
 
+		/** Default Constructor */
 		Node() = default;
+
+		/** Default Destructor */
 		// ~Node() {std::cout << "Calling destructor of node " << keyVal.first << std::endl;}
 		~Node() {}
 		// void print_node() // sada
@@ -42,8 +51,8 @@ class BinaryTree
 	};
 
 	// pointer to root node of the binary tree by default it is initialize to nullptr
-	std::unique_ptr<Node> root;
-	std::size_t treeSize;
+	std::unique_ptr<Node> root; /*!< pointer to root node. */
+	std::size_t treeSize; /*!< stores the numbers of nodes in the list. */
 
 	public:
 
@@ -51,46 +60,51 @@ class BinaryTree
 	friend std::ostream& operator<<(std::ostream&, const BinaryTree<otk, otv>&);
 
 	// CONSTRUCTORS:
-	// BinaryTree() = default;
-	// BinaryTree(): treeSize{0} {std::cout << "tree size " << treeSize << std::endl;}
+	/** Default constructor. 
+     *  Constructs and empty binary tree. treeSize is set to zero. 
+     */
 	BinaryTree(): treeSize{0}  {}
 	
-	// Copy constructor
+	/** Copy constructor.*/
 	BinaryTree(const BinaryTree&);
 	
-	// Copy assignment
+	/** Copy assignment. */
 	BinaryTree& operator=(const BinaryTree& v);
 
-	// Move constructor
+	/** Move constructor. */
 	BinaryTree(BinaryTree&& bt) noexcept;
 
-	// Move assignment
+	/** Move assignment. */
 	BinaryTree& operator=(BinaryTree&& bt) noexcept;
 
-	
-	// Define Iterators
+	/** Iterator of the class */
 	class Iterator;
+	/** ConstIterator of the class */
 	class ConstIterator;
 
 	// begin() and end() function for Iterators/ConstIterators:
-	// Used when the user wants to change the value of a Tree using iterators
+	
+	/** Used when the user wants to change the value of a Tree using iterators.	*/
 	Iterator begin() { std::cout << "Iterator! \n";return Iterator{goLeft()}; }
 	Iterator end(){return Iterator{nullptr};}
 
-	// Used so that the user cannot change the state of a Tree using a reference call to a const Tree
+	/** Used so that the user cannot change the state of a Tree using a reference call to a const Tree.*/
 	ConstIterator begin() const { std::cout << "ConstIterator! \n"; return ConstIterator{goLeft()}; }
 	ConstIterator end() const { return ConstIterator{nullptr}; }
 
-	// Used if we don´t want to change the state of a tree, but we are not using a const Tree 
+	/** Used if we don´t want to change the state of a tree, but we are not using a const Tree. */
 	ConstIterator cbegin() { std::cout << "ConstIterator! cbegin \n"; return ConstIterator{goLeft()}; }
 	ConstIterator cend() { return ConstIterator{nullptr};}
 
-	// To use if the user calls cbegin on a const Tree 
-	// (we allow the user to be lazy and not think about const Tree vs. noConst Tree)
+	/** To use if the user calls cbegin on a const Tree.
+	* (we allow the user to be lazy and not think about const Tree vs. noConst Tree)
+	*/
 	ConstIterator cbegin() const { std::cout << "ConstIterator! cbegin const\n"; return ConstIterator{goLeft()}; }
 	ConstIterator cend() const { return ConstIterator{nullptr};}
 
-	// auxilary function to begin() / end() / cbegin() / cend()
+	/** Auxilary function to begin() / end() / cbegin() / cend() 
+	* It finds the left most element of the tree (smaller key).
+	*/
 	Node * goLeft() const
 	{
 		Node * tmp = root.get();
@@ -98,19 +112,23 @@ class BinaryTree
 		return tmp;
 	}
 
-	// Insert new node
+	/** Insert new node to the BinaryTree. */
 	void insert(const std::pair<TK,TV>& pair);
-	// Find if a given key exists
+	/** Find if a given key exists in the tree.
+	*	Returns an Iterator to the Node.
+	*/
  	Iterator find(const TK& key);
-	// auxiliary funtion for find() and insert()
+	/** auxiliary function for find() and insert() */
 	Node* pos_find(const TK& key);
-	// Remove ALL nodes from tree
+	/** Remove ALL nodes from tree */
 	void clear(){root.reset(); treeSize=0;}
-	// Retrieve tree size
+	/** Retrieve tree size */
 	std::size_t checkSize() const {return treeSize;}
-	// auxilary function of the copy constructor
+	/** auxilary function of the copy constructor */
 	void copy_node(const Node * np);
-	// balance the tree
+	/** balance the tree
+	*	The balance is not in place.
+	*/
 	void balance(BinaryTree& balanceTree, Iterator begin, std::size_t locSize);
 
 };
@@ -180,13 +198,14 @@ class BinaryTree<TK,TV>::Iterator
 
 	public:
 	Iterator(Node* n) : current{n} {}
-
+	/** Returns the std::pair keyVal of the node by reference*/
 	std::pair<TK,TV>& operator*() const { return current->keyVal; }	
 	// TK& operator*() const { return current->keyVal.first; }	
 
 	bool operator==(const Iterator& other) { return current == other.current; }
 	bool operator!=(const Iterator& other) { return !(*this == other); }
 
+	/** It points the iterator to the next node in the tree asuming ascending key order. */
 	Iterator& operator++() 
 	{
 		if (! (current->right.get() ) ) {current = current->ppNode; return *this;}
@@ -199,9 +218,10 @@ class BinaryTree<TK,TV>::Iterator
 template <class TK, class TV>
 class BinaryTree<TK,TV>::ConstIterator: public BinaryTree<TK,TV>::Iterator {
  public:
-  using parent = BinaryTree<TK, TV>::Iterator;
-  using parent::Iterator; 
-  const std::pair<TK,TV>& operator*() const { return parent::operator*(); }
+	using parent = BinaryTree<TK, TV>::Iterator;
+	using parent::Iterator; 
+	/** Returns a const std::pair keyVal of the node by reference*/
+	const std::pair<TK,TV>& operator*() const { return parent::operator*(); }
 };
 
 /////////////////////////////////////////////////////////////////

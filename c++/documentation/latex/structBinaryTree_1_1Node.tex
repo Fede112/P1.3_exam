@@ -1,0 +1,104 @@
+\hypertarget{structBinaryTree_1_1Node}{}\section{Binary\+Tree$<$ TK, TV $>$\+::Node Struct Reference}
+\label{structBinaryTree_1_1Node}\index{BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}}
+
+
+A struct that contains the data of each node in the \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structBinaryTree_1_1Node_aa1377acea199be263e4bbc0d7fda4eaa}{Node}} (const TK \&key, const TV \&val, \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$s, \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$l, \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$r)
+\item 
+\mbox{\hyperlink{structBinaryTree_1_1Node_a6137917f379c2ed5b3a78d4d9da6ddf8}{Node}} (const std\+::pair$<$ TK, TV $>$ kV, \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$s, \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$l, \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$r)
+\item 
+\mbox{\hyperlink{structBinaryTree_1_1Node_ac4125f9e0b3d8a75cc0f1c7bbcc5d838}{Node}} ()=default
+\item 
+\mbox{\hyperlink{structBinaryTree_1_1Node_a3af4f97d0e37aaaa62fa9b3cc15864fb}{$\sim$\+Node}} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+std\+::pair$<$ TK, TV $>$ \mbox{\hyperlink{structBinaryTree_1_1Node_a072d4d35344db07dc1bdec47d78e3a63}{key\+Val}}
+\item 
+\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$ \mbox{\hyperlink{structBinaryTree_1_1Node_a855b9a95346f66f45013ca406813a4d3}{pp\+Node}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $>$ \mbox{\hyperlink{structBinaryTree_1_1Node_a4287689cdd537564e846184c76f084f7}{left}}
+\item 
+std\+::unique\+\_\+ptr$<$ \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $>$ \mbox{\hyperlink{structBinaryTree_1_1Node_a098842d35cfa60029b10a7c4306f2ea6}{right}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$class TK, class TV$>$\newline
+struct Binary\+Tree$<$ T\+K, T\+V $>$\+::\+Node}
+
+A struct that contains the data of each node in the \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}. 
+
+We choose a struct so that elements its members are visible from the container class. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{structBinaryTree_1_1Node_aa1377acea199be263e4bbc0d7fda4eaa}\label{structBinaryTree_1_1Node_aa1377acea199be263e4bbc0d7fda4eaa}} 
+\index{BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}!Node@{Node}}
+\index{Node@{Node}!BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}}
+\subsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
+\mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::Node\+::\+Node (\begin{DoxyParamCaption}\item[{const TK \&}]{key,  }\item[{const TV \&}]{val,  }\item[{\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$}]{s,  }\item[{\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$}]{l,  }\item[{\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$}]{r }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructor that takes key and value separately. \mbox{\Hypertarget{structBinaryTree_1_1Node_a6137917f379c2ed5b3a78d4d9da6ddf8}\label{structBinaryTree_1_1Node_a6137917f379c2ed5b3a78d4d9da6ddf8}} 
+\index{BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}!Node@{Node}}
+\index{Node@{Node}!BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}}
+\subsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
+\mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::Node\+::\+Node (\begin{DoxyParamCaption}\item[{const std\+::pair$<$ TK, TV $>$}]{kV,  }\item[{\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$}]{s,  }\item[{\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$}]{l,  }\item[{\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$}]{r }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Constructor that takes key and value as std\+::pair \mbox{\Hypertarget{structBinaryTree_1_1Node_ac4125f9e0b3d8a75cc0f1c7bbcc5d838}\label{structBinaryTree_1_1Node_ac4125f9e0b3d8a75cc0f1c7bbcc5d838}} 
+\index{BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}!Node@{Node}}
+\index{Node@{Node}!BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}}
+\subsubsection{\texorpdfstring{Node()}{Node()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
+\mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::Node\+::\+Node (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+Default Constructor \mbox{\Hypertarget{structBinaryTree_1_1Node_a3af4f97d0e37aaaa62fa9b3cc15864fb}\label{structBinaryTree_1_1Node_a3af4f97d0e37aaaa62fa9b3cc15864fb}} 
+\index{BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}!````~Node@{$\sim$Node}}
+\index{````~Node@{$\sim$Node}!BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}}
+\subsubsection{\texorpdfstring{$\sim$Node()}{~Node()}}
+{\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
+\mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::Node\+::$\sim$\+Node (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Default Destructor 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structBinaryTree_1_1Node_a072d4d35344db07dc1bdec47d78e3a63}\label{structBinaryTree_1_1Node_a072d4d35344db07dc1bdec47d78e3a63}} 
+\index{BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}!keyVal@{keyVal}}
+\index{keyVal@{keyVal}!BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}}
+\subsubsection{\texorpdfstring{keyVal}{keyVal}}
+{\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
+std\+::pair$<$TK,TV$>$ \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::Node\+::key\+Val}
+
+stores the key and value of the node. \mbox{\Hypertarget{structBinaryTree_1_1Node_a4287689cdd537564e846184c76f084f7}\label{structBinaryTree_1_1Node_a4287689cdd537564e846184c76f084f7}} 
+\index{BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}!left@{left}}
+\index{left@{left}!BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}}
+\subsubsection{\texorpdfstring{left}{left}}
+{\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
+std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}}$>$ \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::Node\+::left}
+
+Unique pointer to the left node from $\ast$this node \mbox{\Hypertarget{structBinaryTree_1_1Node_a855b9a95346f66f45013ca406813a4d3}\label{structBinaryTree_1_1Node_a855b9a95346f66f45013ca406813a4d3}} 
+\index{BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}!ppNode@{ppNode}}
+\index{ppNode@{ppNode}!BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}}
+\subsubsection{\texorpdfstring{ppNode}{ppNode}}
+{\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
+\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}}$\ast$ \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::Node\+::pp\+Node}
+
+Pointer to the proper parent of the node. This is, the node which key is next in the tree (Increasing key order) \mbox{\Hypertarget{structBinaryTree_1_1Node_a098842d35cfa60029b10a7c4306f2ea6}\label{structBinaryTree_1_1Node_a098842d35cfa60029b10a7c4306f2ea6}} 
+\index{BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}!right@{right}}
+\index{right@{right}!BinaryTree$<$ TK, TV $>$::Node@{BinaryTree$<$ TK, TV $>$::Node}}
+\subsubsection{\texorpdfstring{right}{right}}
+{\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
+std\+::unique\+\_\+ptr$<$\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}}$>$ \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::Node\+::right}
+
+Unique pointer to the right node from $\ast$this node 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/fede/\+Documents/mhpc/\+P1.\+3\+\_\+exam/c++/main.\+cc\end{DoxyCompactItemize}
