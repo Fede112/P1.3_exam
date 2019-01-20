@@ -8,18 +8,26 @@
 
 For this exercise we were asked to implement a binary tree class.
 
-The class should include specific member functions which its implementation can be explained with the following workflow example:
+```Main.cpp``` contains the implementation of the class as well as a few simple tests to check the different methods of the class and a benchmark of its performance (how the find method performs).
+
+Full ```doxygen``` documentation of the code is available in the documentation folder. Check ```index.html``` file for a supreme experience.
+
+To run either the test or the benchmark execute the following commands:
+
+
+
+
+
+Figure 1 shows the results of the benchark. We compared the perfomance of the following data structures:
+
+*  A linked list (actually it is our binary tree with nodes inserted in ascending order)
+* A 
+* 
 
 ![Figure 1: Workflow example](./documentation/images/py_workflow.png)
 
-Initially we have three files:
+Comentario de la figura (log(n) vs n) y como es la estadística. 
 
-* File 1 contains a list of postcards
 
-* File 2 contains a different list of postcards
 
-* File 3 is empty.
-
-We create an instance of ```postcardList``` which is initially empty. The function ```readFile(F1)``` populates the object with the information of F1. Note that self._file = F1. ```updateLists(F2)``` updates the information stored in the object with the one contained in F2 and calls the ```updateFile()``` function to dump the new information in File 1 (the file associated with the object). Lastly, ```writeFile(F3)``` is used to dump the information stored in the object to a new file. The object is still associated with F1.  There are additional member functions that handle specific queries to the postcardList. More documentation is available in the documentation folder. We did it with ```Doxygen``` just to try it out.
-
-There were a lot different implementations, we choose this as an example, trying to force consistency between the instance of the class and the file associated to it. 
+Insert
