@@ -1,0 +1,172 @@
+\hypertarget{classexam__solution_1_1PostcardList}{}\section{exam\+\_\+solution.\+Postcard\+List Class Reference}
+\label{classexam__solution_1_1PostcardList}\index{exam\_solution.PostcardList@{exam\_solution.PostcardList}}
+
+
+Documentation for \mbox{\hyperlink{classexam__solution_1_1PostcardList}{Postcard\+List}} class.  
+
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classexam__solution_1_1PostcardList_aa46a40afb5856e1b65bd29aee36a4c24}\label{classexam__solution_1_1PostcardList_aa46a40afb5856e1b65bd29aee36a4c24}} 
+def \mbox{\hyperlink{classexam__solution_1_1PostcardList_aa46a40afb5856e1b65bd29aee36a4c24}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self)
+\begin{DoxyCompactList}\small\item\em The constructor. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classexam__solution_1_1PostcardList_a6557eef9090b67d4b680be50b99e7fcd}{read\+File}} (self, from\+\_\+file\+\_\+path)
+\begin{DoxyCompactList}\small\item\em read\+File to initialize object This function initialize the \mbox{\hyperlink{classexam__solution_1_1PostcardList}{Postcard\+List}} with \+\_\+file = $<$from\+\_\+file\+\_\+path$>$ It is meant to use if you want to initialize the object from a file. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classexam__solution_1_1PostcardList_aea8bf1e9f97027f792b4f0d7b6ca6e55}{update\+Lists}} (self, from\+\_\+file\+\_\+path)
+\begin{DoxyCompactList}\small\item\em Updates \mbox{\hyperlink{classexam__solution_1_1PostcardList}{Postcard\+List}} This function updates the list of postcards (\+\_\+postcards) from a given file\+: $<$from\+\_\+file\+\_\+path$>$ The $<$from\+\_\+file\+\_\+path$>$ should not be the same file as the one associated to the object (\+\_\+file). \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classexam__solution_1_1PostcardList_a766960e1e2aef673787fafb9e1ba41f4}{update\+File}} (self, pc\+\_\+list)
+\begin{DoxyCompactList}\small\item\em Updates the file associated with Postcard\+Lists Meant to be a private function called by \mbox{\hyperlink{classexam__solution_1_1PostcardList_aea8bf1e9f97027f792b4f0d7b6ca6e55}{update\+Lists()}}. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classexam__solution_1_1PostcardList_a42a5668fee4754dde1e3fd0b3d8a992e}{write\+File}} (self, to\+\_\+file\+\_\+path)
+\begin{DoxyCompactList}\small\item\em Writes postcard\+List into a new file. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classexam__solution_1_1PostcardList_a3d34fe21e658f04f6c8d817ab86eb576}\label{classexam__solution_1_1PostcardList_a3d34fe21e658f04f6c8d817ab86eb576}} 
+def \mbox{\hyperlink{classexam__solution_1_1PostcardList_a3d34fe21e658f04f6c8d817ab86eb576}{parse\+Postcards}} (self)
+\begin{DoxyCompactList}\small\item\em Parse the elements stored in \+\_\+postcards Based on that information it creates three dictionaries to store the data\+: \+\_\+date, \+\_\+from, \+\_\+to. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classexam__solution_1_1PostcardList_aaae0e8f143179e658fcb4e5275dc4b70}{get\+Postcards\+By\+Sender}} (self, sender)
+\begin{DoxyCompactList}\small\item\em Returns Postcards sent by a specific name given as an argument of the function (e.\+g. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classexam__solution_1_1PostcardList_a297ba4e9d4ef6770d4da3ec0366bd7bb}{get\+Postcards\+By\+Receiver}} (self, receiver)
+\begin{DoxyCompactList}\small\item\em Returns Postcards recieved by a specific name given as an argument of the function (e.\+g. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classexam__solution_1_1PostcardList_aa4e768d91d72fe0b33f467119d065a87}{get\+Postcards\+By\+Date\+Range}} (self, date\+\_\+range)
+\begin{DoxyCompactList}\small\item\em Returns list of Postcards sent in a date range. \end{DoxyCompactList}\item 
+def \mbox{\hyperlink{classexam__solution_1_1PostcardList_a45986aa4e3461da3db13c2a0fb1c5528}{get\+Number\+Of\+Postcards}} (self)
+\begin{DoxyCompactList}\small\item\em Returns the number of postcards. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Documentation for \mbox{\hyperlink{classexam__solution_1_1PostcardList}{Postcard\+List}} class. 
+
+Postcard\+List() class handles the data stored in .txt files. An object of this class is linked directly to an unique exam\+\_\+postcard\+\_\+list?.txt file. It can read its content, update it if needed and write its information into another file. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classexam__solution_1_1PostcardList_a45986aa4e3461da3db13c2a0fb1c5528}\label{classexam__solution_1_1PostcardList_a45986aa4e3461da3db13c2a0fb1c5528}} 
+\index{exam\_solution.PostcardList@{exam\_solution.PostcardList}!getNumberOfPostcards@{getNumberOfPostcards}}
+\index{getNumberOfPostcards@{getNumberOfPostcards}!exam\_solution.PostcardList@{exam\_solution.PostcardList}}
+\subsubsection{\texorpdfstring{getNumberOfPostcards()}{getNumberOfPostcards()}}
+{\footnotesize\ttfamily def exam\+\_\+solution.\+Postcard\+List.\+get\+Number\+Of\+Postcards (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+
+
+Returns the number of postcards. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em self} & The object pointer. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classexam__solution_1_1PostcardList_aa4e768d91d72fe0b33f467119d065a87}\label{classexam__solution_1_1PostcardList_aa4e768d91d72fe0b33f467119d065a87}} 
+\index{exam\_solution.PostcardList@{exam\_solution.PostcardList}!getPostcardsByDateRange@{getPostcardsByDateRange}}
+\index{getPostcardsByDateRange@{getPostcardsByDateRange}!exam\_solution.PostcardList@{exam\_solution.PostcardList}}
+\subsubsection{\texorpdfstring{getPostcardsByDateRange()}{getPostcardsByDateRange()}}
+{\footnotesize\ttfamily def exam\+\_\+solution.\+Postcard\+List.\+get\+Postcards\+By\+Date\+Range (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{date\+\_\+range }\end{DoxyParamCaption})}
+
+
+
+Returns list of Postcards sent in a date range. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em self} & The object pointer. \\
+\hline
+{\em date\+\_\+range} & Date range as a tuple of datetime (start,end) \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classexam__solution_1_1PostcardList_a297ba4e9d4ef6770d4da3ec0366bd7bb}\label{classexam__solution_1_1PostcardList_a297ba4e9d4ef6770d4da3ec0366bd7bb}} 
+\index{exam\_solution.PostcardList@{exam\_solution.PostcardList}!getPostcardsByReceiver@{getPostcardsByReceiver}}
+\index{getPostcardsByReceiver@{getPostcardsByReceiver}!exam\_solution.PostcardList@{exam\_solution.PostcardList}}
+\subsubsection{\texorpdfstring{getPostcardsByReceiver()}{getPostcardsByReceiver()}}
+{\footnotesize\ttfamily def exam\+\_\+solution.\+Postcard\+List.\+get\+Postcards\+By\+Receiver (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{receiver }\end{DoxyParamCaption})}
+
+
+
+Returns Postcards recieved by a specific name given as an argument of the function (e.\+g. 
+
+\textquotesingle{}Batman\textquotesingle{}) 
+\begin{DoxyParams}{Parameters}
+{\em self} & The object pointer. \\
+\hline
+{\em sender} & Receiver name as a string \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classexam__solution_1_1PostcardList_aaae0e8f143179e658fcb4e5275dc4b70}\label{classexam__solution_1_1PostcardList_aaae0e8f143179e658fcb4e5275dc4b70}} 
+\index{exam\_solution.PostcardList@{exam\_solution.PostcardList}!getPostcardsBySender@{getPostcardsBySender}}
+\index{getPostcardsBySender@{getPostcardsBySender}!exam\_solution.PostcardList@{exam\_solution.PostcardList}}
+\subsubsection{\texorpdfstring{getPostcardsBySender()}{getPostcardsBySender()}}
+{\footnotesize\ttfamily def exam\+\_\+solution.\+Postcard\+List.\+get\+Postcards\+By\+Sender (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{sender }\end{DoxyParamCaption})}
+
+
+
+Returns Postcards sent by a specific name given as an argument of the function (e.\+g. 
+
+\textquotesingle{}Batman\textquotesingle{}) 
+\begin{DoxyParams}{Parameters}
+{\em self} & The object pointer. \\
+\hline
+{\em sender} & Sender name as a string \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classexam__solution_1_1PostcardList_a6557eef9090b67d4b680be50b99e7fcd}\label{classexam__solution_1_1PostcardList_a6557eef9090b67d4b680be50b99e7fcd}} 
+\index{exam\_solution.PostcardList@{exam\_solution.PostcardList}!readFile@{readFile}}
+\index{readFile@{readFile}!exam\_solution.PostcardList@{exam\_solution.PostcardList}}
+\subsubsection{\texorpdfstring{readFile()}{readFile()}}
+{\footnotesize\ttfamily def exam\+\_\+solution.\+Postcard\+List.\+read\+File (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{from\+\_\+file\+\_\+path }\end{DoxyParamCaption})}
+
+
+
+read\+File to initialize object This function initialize the \mbox{\hyperlink{classexam__solution_1_1PostcardList}{Postcard\+List}} with \+\_\+file = $<$from\+\_\+file\+\_\+path$>$ It is meant to use if you want to initialize the object from a file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em self} & The object pointer. \\
+\hline
+{\em from\+\_\+file\+\_\+path} & Path to the file that is going to be associated with the instance of the class. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classexam__solution_1_1PostcardList_a766960e1e2aef673787fafb9e1ba41f4}\label{classexam__solution_1_1PostcardList_a766960e1e2aef673787fafb9e1ba41f4}} 
+\index{exam\_solution.PostcardList@{exam\_solution.PostcardList}!updateFile@{updateFile}}
+\index{updateFile@{updateFile}!exam\_solution.PostcardList@{exam\_solution.PostcardList}}
+\subsubsection{\texorpdfstring{updateFile()}{updateFile()}}
+{\footnotesize\ttfamily def exam\+\_\+solution.\+Postcard\+List.\+update\+File (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{pc\+\_\+list }\end{DoxyParamCaption})}
+
+
+
+Updates the file associated with Postcard\+Lists Meant to be a private function called by \mbox{\hyperlink{classexam__solution_1_1PostcardList_aea8bf1e9f97027f792b4f0d7b6ca6e55}{update\+Lists()}}. 
+
+Do not run by it self!! \mbox{\Hypertarget{classexam__solution_1_1PostcardList_aea8bf1e9f97027f792b4f0d7b6ca6e55}\label{classexam__solution_1_1PostcardList_aea8bf1e9f97027f792b4f0d7b6ca6e55}} 
+\index{exam\_solution.PostcardList@{exam\_solution.PostcardList}!updateLists@{updateLists}}
+\index{updateLists@{updateLists}!exam\_solution.PostcardList@{exam\_solution.PostcardList}}
+\subsubsection{\texorpdfstring{updateLists()}{updateLists()}}
+{\footnotesize\ttfamily def exam\+\_\+solution.\+Postcard\+List.\+update\+Lists (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{from\+\_\+file\+\_\+path }\end{DoxyParamCaption})}
+
+
+
+Updates \mbox{\hyperlink{classexam__solution_1_1PostcardList}{Postcard\+List}} This function updates the list of postcards (\+\_\+postcards) from a given file\+: $<$from\+\_\+file\+\_\+path$>$ The $<$from\+\_\+file\+\_\+path$>$ should not be the same file as the one associated to the object (\+\_\+file). 
+
+It also automatically updates the \+\_\+file associated with the instance of \mbox{\hyperlink{classexam__solution_1_1PostcardList}{Postcard\+List}}. 
+\begin{DoxyParams}{Parameters}
+{\em self} & The object pointer. \\
+\hline
+{\em to\+\_\+file\+\_\+path} & Path to the file from were to read the postcard list. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classexam__solution_1_1PostcardList_a42a5668fee4754dde1e3fd0b3d8a992e}\label{classexam__solution_1_1PostcardList_a42a5668fee4754dde1e3fd0b3d8a992e}} 
+\index{exam\_solution.PostcardList@{exam\_solution.PostcardList}!writeFile@{writeFile}}
+\index{writeFile@{writeFile}!exam\_solution.PostcardList@{exam\_solution.PostcardList}}
+\subsubsection{\texorpdfstring{writeFile()}{writeFile()}}
+{\footnotesize\ttfamily def exam\+\_\+solution.\+Postcard\+List.\+write\+File (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{to\+\_\+file\+\_\+path }\end{DoxyParamCaption})}
+
+
+
+Writes postcard\+List into a new file. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em self} & The object pointer. \\
+\hline
+{\em to\+\_\+file\+\_\+path} & Path to the file you want to write the postcard list to. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/fede/\+Documents/mhpc/\+P1.\+3\+\_\+exam/python/exam\+\_\+solution.\+py\end{DoxyCompactItemize}
