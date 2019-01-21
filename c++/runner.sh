@@ -22,7 +22,7 @@ calculate_average()
 		 		v3+=$c3
 		 }
 	 	 END {
-	 	 		printf("%d %f %f %f\n", $x,
+	 	 		printf("%d   %0.3f   %0.3f   %0.3f\n", $x,
 	 	 		v1/NR,
 	 	 		v2/NR,
 	 	 		v3/NR)
@@ -53,10 +53,10 @@ calculate_std()
 		 } 
 	
 		 END {
-				printf "%f %f %f\n",
+				printf ("%0.3f   %0.3f   %0.3f\n",
 				sqrt((sumsq1-sum1^2/NR)/NR),
 				sqrt((sumsq2-sum2^2/NR)/NR),
-				sqrt((sumsq3-sum3^2/NR)/NR)
+				sqrt((sumsq3-sum3^2/NR)/NR))
 		}
 	 	'  "c1=$c1" "c2=$c2" "c3=$c3" \
 	 	$1 1>> $2
@@ -73,9 +73,9 @@ DAT=.dat
 RAW=.raw
 EXE=main.x
 
+# INNER_REPETIONS=10
 REPETITIONS=10
-SIZES=3
-size=10 
+SIZES=`seq 100 1000 30100` 
 # Compiling ------------------------------------------
 make
 
@@ -83,10 +83,9 @@ make
 rm ${DIR}/*.dat ${DIR}/*raw 2> /dev/null
 
 # Running --------------------------------------------
-for i in `seq 1 ${SIZES}`; do
-	((size *= 10))
+for size in ${SIZES[*]}; do
 	for repetition in `seq 1 ${REPETITIONS}`; do
-		 ./${EXE} ${size} \
+		 ./${EXE} ${size} ${size}\
 		 1>> ${DATA}_${size}${RAW}		
 	done
 
@@ -94,11 +93,15 @@ for i in `seq 1 ${SIZES}`; do
 						  ${AVG_DATA}${RAW}
 		calculate_std 	  ${DATA}_${size}${RAW} \
 					  	  ${STD_DATA}${RAW}
+		rm ${DATA}_${size}${RAW}
 done
 
 paste 			  ${AVG_DATA}${RAW} ${STD_DATA}${RAW} \
 	  			  1>> ${MERGE_DATA}${DAT}
 
-# Remove binaries ------------------------------------
-make clean
-rm ${DIR}/*.raw
+rm 	${AVG_DATA}${RAW} ${STD_DATA}${RAW}
+
+
+# ------------------------------------
+# sed -i '1s/^/Size\tNon balanced tree\t\Balanced tree\tstd::map\n/' \
+				# ${MERGE_DATA}${DAT}

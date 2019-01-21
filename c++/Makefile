@@ -2,7 +2,7 @@ CXX=c++
 CXXFLAGS= -Wall -Wextra -std=c++11 -O3
 
 DEBUG= -g -ggdb
-
+ 
 SRC=main.cc
 EXE=$(SRC:.cc=.x)
 
@@ -14,6 +14,11 @@ all: $(EXE)
 debug: CXXFLAGS += $(DEBUG)
 debug: all
 
+test: CXXFLAGS += -DTEST
+test: all
+
+benchmark: CXXFLAGS += -DBENCHMARK
+benchmark: all
 benchmark:
 	./runner.sh
 
@@ -21,7 +26,7 @@ plot:
 	./plotter.sh
 
 clean:
-	rm -rf *~ $(EXE) *.png
+	rm -rf *~ $(EXE) *.png ./DATA/*
 
 .PHONY: clean all debug
 
