@@ -439,7 +439,7 @@ int main(int argc, char const *argv[])
 	BinaryTree<int, int> tree;
 	for (auto x: keys_1) {tree.insert(std::pair<int,int>(x,1));}
 	auto look1 = tree.find(4);
-	auto look2 = tree.find(4);
+	auto look2 = tree.find(5);
 	auto find_stop = tree.end();
 
 	std::cout << "Looking for 4: ";
