@@ -11,8 +11,10 @@ all: $(EXE)
 %.x:%.cc
 	$(CXX) $(CXXFLAGS) $< -o $@
 
-debug: CXXFLAGS += $(DEBUG)
+debug: CXXFLAGS += $(DEBUG) -DTEST
 debug: all
+debug: 
+	valgrind ./${EXE} 
 
 test: CXXFLAGS += -DTEST
 test: all
