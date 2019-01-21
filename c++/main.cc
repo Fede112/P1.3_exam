@@ -7,7 +7,7 @@
 #include <vector>
 #include <array>
 #include <map>
-
+#include <stdexcept>
 
 /*! \brief A binary tree class to store data.
  *
@@ -58,6 +58,17 @@ class BinaryTree
 
 	template <class otk, class otv>
 	friend std::ostream& operator<<(std::ostream&, const BinaryTree<otk, otv>&);
+
+
+	/** Returns a const reference to the value associated with the key.
+	*	If the key is not present, throws an exception.
+	*/
+	const TV& operator[](const TK& key) const;
+	/** Returns a reference to the value associated with the key.
+	*	If the key is not present, it inserts the key with TTV{}.
+	*/
+	TV& operator[](const TK& key);
+
 
 	// CONSTRUCTORS:
 	/** Default constructor. 
@@ -113,13 +124,13 @@ class BinaryTree
 	}
 
 	/** Insert new node to the BinaryTree. */
-	void insert(const std::pair<TK,TV>& pair);
+	Node* insert(const std::pair<TK,TV>& pair);
 	/** Find if a given key exists in the tree.
 	*	Returns an Iterator to the Node.
 	*/
- 	Iterator find(const TK& key);
+ 	Iterator find(const TK& key) const;
 	/** auxiliary function for find() and insert() */
-	Node* pos_find(const TK& key);
+	Node* pos_find(const TK& key) const;
 	/** Remove ALL nodes from tree */
 	void clear(){root.reset(); treeSize=0;}
 	/** Retrieve tree size */
@@ -240,7 +251,7 @@ std::ostream& operator<<(std::ostream& os, const BinaryTree<TK, TV>& tree)
 
 template <class TK, class TV>
 // BinaryTree<TK,TV>::Node* BinaryTree<TK, TV>::pos_find(const std::pair<TK,TV>& pair)
-typename BinaryTree<TK,TV>::Node* BinaryTree<TK, TV>::pos_find(const TK& key)
+typename BinaryTree<TK,TV>::Node* BinaryTree<TK, TV>::pos_find(const TK& key) const
 {
 	// using Node = BinaryTree<TK, TV>::Node;
 	Node* tmpA = root ? root.get() : nullptr;
@@ -258,7 +269,7 @@ typename BinaryTree<TK,TV>::Node* BinaryTree<TK, TV>::pos_find(const TK& key)
 } 
 
 template <class TK, class TV>
-void BinaryTree<TK, TV>::insert(const std::pair<TK,TV>& pair)
+typename BinaryTree<TK,TV>::Node* BinaryTree<TK, TV>::insert(const std::pair<TK,TV>& pair)
 {
 	using Node = BinaryTree<TK, TV>::Node;
 	treeSize ++;
@@ -266,18 +277,31 @@ void BinaryTree<TK, TV>::insert(const std::pair<TK,TV>& pair)
 	Node* pos = BinaryTree<TK, TV>::pos_find(pair.first);
 
 	if (pos && pair.first < pos->keyVal.first)
+	{
 		pos->left.reset(new Node{pair, pos, nullptr, nullptr});
+		return pos->left.get();
+	}
 	else if (pos && pair.first > pos->keyVal.first)
+	{	
 		pos->right.reset(new Node{pair,  pos->ppNode, nullptr, nullptr});
+		return pos->right.get();
+	}
 	else if (pos && pair.first == pos->keyVal.first)
-		{(pos->keyVal.second)++; treeSize--;}
+	{	
+		(pos->keyVal.second)++; treeSize--;
+		return pos;
+	}
 	else
-		root.reset(new Node{pair, nullptr, nullptr, nullptr}); 
+	{
+		root.reset(new Node{pair, nullptr, nullptr, nullptr});
+		return root.get();
+	}
+
 }
 	
 
 template <class TK, class TV>
-typename BinaryTree<TK,TV>::Iterator BinaryTree<TK, TV>::find(const TK& key)
+typename BinaryTree<TK,TV>::Iterator BinaryTree<TK, TV>::find(const TK& key) const
 {
 	using Node = BinaryTree<TK, TV>::Node;
 	Node* pos = BinaryTree<TK, TV>::pos_find(key);
@@ -288,7 +312,33 @@ typename BinaryTree<TK,TV>::Iterator BinaryTree<TK, TV>::find(const TK& key)
 	return Iterator{nullptr};
 }
 
+template <class TK, class TV>
+const TV& BinaryTree<TK, TV>::operator[](const TK& key) const
+{
+	using Node = BinaryTree<TK, TV>::Node;
+	Node* pos = BinaryTree<TK, TV>::pos_find(key);
+	if (pos && key == pos->keyVal.first )
+	{
+		return pos->keyVal.second;
+	}
+	std::string errMsg = "Cannot insert new node. Const reference to Tree!";
+	throw std::runtime_error("Error! " + errMsg);
+}
 
+template <class TK, class TV>
+TV& BinaryTree<TK, TV>::operator[](const TK& key)
+{
+	using Node = BinaryTree<TK, TV>::Node;
+	Node* pos = BinaryTree<TK, TV>::pos_find(key);
+	if (pos && key == pos->keyVal.first )
+	{
+		return pos->keyVal.second;
+	}
+	else
+	{
+		return BinaryTree<TK, TV>::insert(std::pair<TK,TV>(key,TV{}))->keyVal.second;
+	}
+}
 
 template <class TK, class TV>
 void BinaryTree<TK, TV>::balance(BinaryTree<TK, TV>& balanceTree, BinaryTree<TK,TV>::Iterator begin, std::size_t locSize)
@@ -315,115 +365,122 @@ void BinaryTree<TK, TV>::balance(BinaryTree<TK, TV>& balanceTree, BinaryTree<TK,
 int main(int argc, char const *argv[])
 {
 
-	// BinaryTree<int, int> test1;
-	// BinaryTree<int, int> test2;
+	BinaryTree<int, int> test1;
+	BinaryTree<int, int> test2;
 
-	// std::array<int, 9> keys_1{8, 3, 10, 6, 7, 1, 4, 14, 13};	
-	// for (auto x: keys_1) {test1.insert(std::pair<int,int>(x,1));}
-	// // Random tree
-	// for (int i = 0; i < 7; ++i)
-	// {
-	// 	test2.insert(std::pair<int,int>(rand()%100,1));
-	// }
+	std::array<int, 9> keys_1{8, 3, 10, 6, 7, 1, 4, 14, 13};	
+	for (auto x: keys_1) {test1.insert(std::pair<int,int>(x,1));}
+	// Random tree
+	for (int i = 0; i < 7; ++i)
+	{
+		test2.insert(std::pair<int,int>(rand()%100,1));
+	}
 
-	// /////////////////////////////////////////////////////////////////
-	// // COPY AND MOVE SEMANTICS TEST
-	// std::cout << "\nBegin copy and move semantics tests ...\n" << std::endl;
+	/////////////////////////////////////////////////////////////////
+	// TEST operator[]
+	std::cout << "\noperator[] test:" << std::endl;
+	std::cout << test1;
+	test1[21];
+	std::cout << test1;
 
-	// BinaryTree<int, int> test_copy_asg;
-	// BinaryTree<int, int> test_move_asg;
+	/////////////////////////////////////////////////////////////////
+	// COPY AND MOVE SEMANTICS TEST
+	std::cout << "\nBegin copy and move semantics tests ...\n" << std::endl;
 
-	// BinaryTree<int, int> test_copy_ctr{test1};
-	// std::cout << test_copy_ctr;
-	// test_copy_asg = test1;
-	// std::cout << test_copy_asg;
-	// BinaryTree<int, int> test_move_ctr = std::move(test1);
-	// std::cout << test_move_ctr;
-	// test_move_asg = test_move_ctr;
-	// std::cout << test_move_asg;
+	BinaryTree<int, int> test_copy_asg;
+	BinaryTree<int, int> test_move_asg;
+
+	BinaryTree<int, int> test_copy_ctr{test1};
+	std::cout << test_copy_ctr;
+	test_copy_asg = test1;
+	std::cout << test_copy_asg;
+	BinaryTree<int, int> test_move_ctr = std::move(test1);
+	std::cout << test_move_ctr;
+	test_move_asg = test_move_ctr;
+	std::cout << test_move_asg;
 	
-	// std::cout << "\nCompleted copy and move semantics tests ..." << std::endl;
-	// /////////////////////////////////////////////////////////////////
+	std::cout << "\nCompleted copy and move semantics tests ..." << std::endl;
+	/////////////////////////////////////////////////////////////////
 	
 
-	// /////////////////////////////////////////////////////////////////
-	// std::cout << "\nBegin Iterators tests ...\n" << std::endl;
-	// // ITERATORS TEST
-	// // trying constIterator threw operator<<(std::ostream& os, const BinaryTree<TK, TV>& tree)
-	// std::cout << test2;
+	/////////////////////////////////////////////////////////////////
+	std::cout << "\nBegin Iterators tests ...\n" << std::endl;
+	// ITERATORS TEST
+	// trying constIterator threw operator<<(std::ostream& os, const BinaryTree<TK, TV>& tree)
+	std::cout << test2;
 
-	// // trying Iterators
-	// auto it = test2.begin();
-	// auto stop = test2.end();
-	// for(; it!=stop; ++it)
-	// {
-	// 	std::cout << (*it).first << " ";
-	//   	(*it).second = 2;
-	// }
-	// std::cout << std::endl;
-	// std::cout << test2;
+	// trying Iterators
+	auto it = test2.begin();
+	auto stop = test2.end();
+	for(; it!=stop; ++it)
+	{
+		std::cout << (*it).first << " ";
+	  	(*it).second = 2;
+	}
+	std::cout << std::endl;
+	std::cout << test2;
 
-	// // trying cbegin and cend
-	// auto c_it = test2.cbegin();
-	// auto c_stop = test2.cend();
-	// for(; c_it!=c_stop; ++c_it)
-	// {
-	// 	std::cout << (*c_it).first << " ";
-	// //   (*c_it) = std::pair<int,int>(1,1);  // Error because it uses cbegin!
-	// }
-	// std::cout << std::endl;
-	// std::cout << "\nCompleted Iterators tests ..." << std::endl;
-	// /////////////////////////////////////////////////////////////////
+	// trying cbegin and cend
+	auto c_it = test2.cbegin();
+	auto c_stop = test2.cend();
+	for(; c_it!=c_stop; ++c_it)
+	{
+		std::cout << (*c_it).first << " ";
+	//   (*c_it) = std::pair<int,int>(1,1);  // Error because it uses cbegin!
+	}
+	std::cout << std::endl;
+	std::cout << "\nCompleted Iterators tests ..." << std::endl;
+	/////////////////////////////////////////////////////////////////
 
 
-	// /////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////
 
-	// // FIND TEST
-	// BinaryTree<int, int> tree;
-	// for (auto x: keys_1) {tree.insert(std::pair<int,int>(x,1));}
-	// auto look1 = tree.find(std::pair<int,int>(4,1));
-	// auto look2 = tree.find(std::pair<int,int>(5,1));
-	// auto find_stop = tree.end();
+	// FIND TEST
+	BinaryTree<int, int> tree;
+	for (auto x: keys_1) {tree.insert(std::pair<int,int>(x,1));}
+	auto look1 = tree.find(4);
+	auto look2 = tree.find(4);
+	auto find_stop = tree.end();
 
-	// std::cout << "Looking for 4: ";
-	// std::cout << (look1 != find_stop) << std::endl;
-	// std::cout << "Looking for 5: " ;
-	// std::cout << (look2 != find_stop) << std::endl;
+	std::cout << "Looking for 4: ";
+	std::cout << (look1 != find_stop) << std::endl;
+	std::cout << "Looking for 5: " ;
+	std::cout << (look2 != find_stop) << std::endl;
 		
-	// /////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////
 
 	// BENCHMARK
 
-	const std::size_t N = atoi(argv[1]);
-	std::size_t lookFor = 1;
-	using namespace std::chrono;
-	using time_point = steady_clock::time_point;
+	// const std::size_t N = atoi(argv[1]);
+	// std::size_t lookFor = 1;
+	// using namespace std::chrono;
+	// using time_point = steady_clock::time_point;
 
-	BinaryTree<int, int> nonBalanced_bigTree, balanced_bigTree;
-	std::map<int,int> std_map;
+	// BinaryTree<int, int> nonBalanced_bigTree, balanced_bigTree;
+	// std::map<int,int> std_map;
 
-	std::vector<int> aLotOfKeys;	
-	for (std::size_t i=0; i<N; ++i) {aLotOfKeys.push_back(N-i);}
-	for (auto x: aLotOfKeys) { nonBalanced_bigTree.insert(std::pair<int,int>(x,1)); std_map.insert( std::pair<int,int>(x,1) ); }
+	// std::vector<int> aLotOfKeys;	
+	// for (std::size_t i=0; i<N; ++i) {aLotOfKeys.push_back(N-i);}
+	// for (auto x: aLotOfKeys) { nonBalanced_bigTree.insert(std::pair<int,int>(x,1)); std_map.insert( std::pair<int,int>(x,1) ); }
 	
-	nonBalanced_bigTree.balance(balanced_bigTree, nonBalanced_bigTree.begin(), nonBalanced_bigTree.checkSize());
+	// nonBalanced_bigTree.balance(balanced_bigTree, nonBalanced_bigTree.begin(), nonBalanced_bigTree.checkSize());
 
 	
-	time_point begin1 = steady_clock::now();
-	auto found_at1 = nonBalanced_bigTree.find(lookFor);
-	time_point end1= steady_clock::now();
+	// time_point begin1 = steady_clock::now();
+	// auto found_at1 = nonBalanced_bigTree.find(lookFor);
+	// time_point end1= steady_clock::now();
 
-	time_point begin2 = steady_clock::now();
-	auto found_at2 = balanced_bigTree.find(lookFor);
-	time_point end2= steady_clock::now();
+	// time_point begin2 = steady_clock::now();
+	// auto found_at2 = balanced_bigTree.find(lookFor);
+	// time_point end2= steady_clock::now();
 	
-	time_point begin3 = steady_clock::now();
-	auto found_at3 = std_map.find(lookFor);
-	time_point end3= steady_clock::now();
+	// time_point begin3 = steady_clock::now();
+	// auto found_at3 = std_map.find(lookFor);
+	// time_point end3= steady_clock::now();
 
-	std::cout << N << " " << duration_cast<nanoseconds> (end1 - begin1).count();
-	std::cout << " " << duration_cast<nanoseconds> (end2 - begin2).count();
-	std::cout << " " << duration_cast<nanoseconds> (end3 - begin3).count() <<std::endl;
+	// std::cout << N << " " << duration_cast<nanoseconds> (end1 - begin1).count();
+	// std::cout << " " << duration_cast<nanoseconds> (end2 - begin2).count();
+	// std::cout << " " << duration_cast<nanoseconds> (end3 - begin3).count() <<std::endl;
 
 	///////////////////////////////////////////////////////////////
 
