@@ -144,8 +144,6 @@ class BinaryTree
 	*/
 	void balance(BinaryTree& balanceTree, Iterator begin, std::size_t locSize);
 
-
-	void dummy_func(Iterator it);
 };
 
 // Copy semantics /////////////////////////////////////////////
@@ -366,13 +364,6 @@ void BinaryTree<TK, TV>::balance(BinaryTree<TK, TV>& balanceTree, BinaryTree<TK,
 }
 
 
-template <class TK, class TV>
-void BinaryTree<TK, TV>::dummy_func(BinaryTree<TK,TV>::Iterator it)
-{
-	int a = 5;
-	return;
-}
-
 
 int main(int argc, char const *argv[])
 {
@@ -400,10 +391,11 @@ int main(int argc, char const *argv[])
 
 	/////////////////////////////////////////////////////////////////
 	// TEST operator[]
-	std::cout << "\noperator[] test:" << std::endl;
+	std::cout << "\nBegin operator[] test ...\n" << std::endl;
 	std::cout << test1;
 	test1[21];
 	std::cout << test1;
+	std::cout << "\nCompleted operator[] test.\n" << std::endl;
 
 	/////////////////////////////////////////////////////////////////
 	// COPY AND MOVE SEMANTICS TEST
@@ -419,9 +411,8 @@ int main(int argc, char const *argv[])
 	BinaryTree<int, int> test_move_ctr = std::move(test1);
 	std::cout << test_move_ctr;
 	test_move_asg = test_move_ctr;
-	std::cout << test_move_asg;
-	
-	std::cout << "\nCompleted copy and move semantics tests ..." << std::endl;
+	std::cout << test_move_asg;	
+	std::cout << "\nCompleted copy and move semantics tests.\n" << std::endl;
 	/////////////////////////////////////////////////////////////////
 	
 
@@ -450,24 +441,44 @@ int main(int argc, char const *argv[])
 		std::cout << (*c_it).first << " ";
 	//   (*c_it) = std::pair<int,int>(1,1);  // Error because it uses cbegin!
 	}
-	std::cout << std::endl;
-	std::cout << "\nCompleted Iterators tests ..." << std::endl;
+	std::cout << "\nCompleted Iterators tests\n" << std::endl;
 	/////////////////////////////////////////////////////////////////
 
 
 	/////////////////////////////////////////////////////////////////
-
 	// FIND TEST
-	BinaryTree<int, int> tree;
-	for (auto x: keys_1) {tree.insert(std::pair<int,int>(x,1));}
-	auto look1 = tree.find(4);
-	auto look2 = tree.find(5);
-	auto find_stop = tree.end();
+	std::cout << "\nBegin find tests ...\n" << std::endl;
+	BinaryTree<int, int> tree_ft;
+	std::array<int, 9> keys_ft{8, 3, 10, 6, 7, 1, 4, 14, 13};	
+	for (auto x: keys_ft) {tree_ft.insert(std::pair<int,int>(x,1));}
+	
+	// look for two keys
+	auto look1 = tree_ft.find(4);
+	auto look2 = tree_ft.find(5);
+	auto find_stop = tree_ft.end();
 
 	std::cout << "Looking for 4: ";
 	std::cout << (look1 != find_stop) << std::endl;
 	std::cout << "Looking for 5: " ;
 	std::cout << (look2 != find_stop) << std::endl;
+	std::cout << "\nCompleted find tests.\n" << std::endl;
+		
+	/////////////////////////////////////////////////////////////////
+
+
+
+	/////////////////////////////////////////////////////////////////
+	// BALANCE TEST
+	std::cout << "\nBegin balance test ...\n" << std::endl;
+	BinaryTree<int, int> unbalancedTree;
+	BinaryTree<int, int> balancedTree;
+	
+	// create unbalance tree
+	std::array<int, 9> keys_ub{1,2,3,4,5,6,7,8,9};	
+	for (auto x: keys_ub) {unbalancedTree.insert(std::pair<int,int>(x,1));}
+	
+	unbalancedTree.balance(balancedTree, unbalancedTree.begin(), unbalancedTree.checkSize());
+	std::cout << "\nCompleted balance tests.\n" << std::endl;
 		
 	/////////////////////////////////////////////////////////////////
 
