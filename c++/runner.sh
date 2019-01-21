@@ -73,7 +73,7 @@ DAT=.dat
 RAW=.raw
 EXE=main.x
 
-# INNER_REPETIONS=10
+INNER_REPETIONS=1000
 REPETITIONS=10
 SIZES=`seq 100 1000 30100` 
 # Compiling ------------------------------------------
@@ -85,7 +85,7 @@ rm ${DIR}/*.dat ${DIR}/*raw 2> /dev/null
 # Running --------------------------------------------
 for size in ${SIZES[*]}; do
 	for repetition in `seq 1 ${REPETITIONS}`; do
-		 ./${EXE} ${size} ${size}\
+		 ./${EXE} ${size} ${INNER_REPETIONS}\
 		 1>> ${DATA}_${size}${RAW}		
 	done
 
