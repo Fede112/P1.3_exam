@@ -273,7 +273,7 @@ typename BinaryTree<TK,TV>::Node* BinaryTree<TK, TV>::pos_find(const TK& key) co
 
 	
 template <class TK, class TV>
-typename BinaryTree<TK,TV>::Iterator BinaryTree<TK, TV>::find(const TK& key)
+typename BinaryTree<TK,TV>::Iterator BinaryTree<TK, TV>::find(const TK& key) const 
 {
 	using Node = BinaryTree<TK, TV>::Node;
 	Node* pos = BinaryTree<TK, TV>::pos_find(key);
@@ -316,17 +316,6 @@ typename BinaryTree<TK,TV>::Node* BinaryTree<TK, TV>::insert(const std::pair<TK,
 
 }
 
-template <class TK, class TV>
-typename BinaryTree<TK,TV>::Iterator BinaryTree<TK, TV>::find(const TK& key) const
-{
-	using Node = BinaryTree<TK, TV>::Node;
-	Node* pos = BinaryTree<TK, TV>::pos_find(key);
-	if (pos && key == pos->keyVal.first )
-	{
-		return Iterator{pos};
-	}
-	return Iterator{nullptr};
-}
 
 template <class TK, class TV>
 const TV& BinaryTree<TK, TV>::operator[](const TK& key) const
@@ -394,7 +383,7 @@ int main(int argc, char const *argv[])
 
 	if(argc != 1)
 	{
-		printf("Test RUN, no arguments needed\n");
+		printf("Test RUN for %s, no arguments needed for \n", argv[0]);
 		exit(1);
 	}
 
