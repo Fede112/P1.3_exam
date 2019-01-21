@@ -17,6 +17,10 @@ struct \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}}
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+const TV \& \mbox{\hyperlink{classBinaryTree_ab5087864bf9bd49c1e5a79640066e34e}{operator\mbox{[}$\,$\mbox{]}}} (const TK \&key) const
+\item 
+TV \& \mbox{\hyperlink{classBinaryTree_a21bebae9adf0939f622b2bb47540694a}{operator\mbox{[}$\,$\mbox{]}}} (const TK \&key)
+\item 
 \mbox{\hyperlink{classBinaryTree_a18b4981a8d885a296b144462729c0679}{Binary\+Tree}} ()
 \item 
 \mbox{\hyperlink{classBinaryTree_a8cfb4f89d47accb81042824dca065946}{Binary\+Tree}} (const \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}} \&)
@@ -49,11 +53,11 @@ struct \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}}
 \item 
 \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$ \mbox{\hyperlink{classBinaryTree_a5b7168f283acc83b39e5af15b9817b47}{go\+Left}} () const
 \item 
-void \mbox{\hyperlink{classBinaryTree_a2e953ad45f601f1e94dbdb85c67f0bbb}{insert}} (const std\+::pair$<$ TK, TV $>$ \&pair)
+\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$ \mbox{\hyperlink{classBinaryTree_a356114cfeed3598a9a37907eafed7b25}{insert}} (const std\+::pair$<$ TK, TV $>$ \&pair)
 \item 
-\mbox{\hyperlink{classBinaryTree_1_1Iterator}{Iterator}} \mbox{\hyperlink{classBinaryTree_ae515b4f35af1e4f44a688cb8698471c8}{find}} (const TK \&key)
+\mbox{\hyperlink{classBinaryTree_1_1Iterator}{Iterator}} \mbox{\hyperlink{classBinaryTree_ab7ca7386a799bd4ec8cece3a0e15d7e3}{find}} (const TK \&key) const
 \item 
-\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$ \mbox{\hyperlink{classBinaryTree_a0a237f399143c32083d44623effa97ae}{pos\+\_\+find}} (const TK \&key)
+\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$ \mbox{\hyperlink{classBinaryTree_a59ebcb199618fe76be5f3a9c813c95c9}{pos\+\_\+find}} (const TK \&key) const
 \item 
 void \mbox{\hyperlink{classBinaryTree_a264446922f6d5fe75d4a41c650f88d6a}{clear}} ()
 \item 
@@ -167,12 +171,12 @@ Remove A\+LL nodes from tree \mbox{\Hypertarget{classBinaryTree_a01dfd4a677465fb
 {\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
 void \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::copy\+\_\+node (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$}]{np }\end{DoxyParamCaption})}
 
-auxilary function of the copy constructor \mbox{\Hypertarget{classBinaryTree_ae515b4f35af1e4f44a688cb8698471c8}\label{classBinaryTree_ae515b4f35af1e4f44a688cb8698471c8}} 
+auxilary function of the copy constructor \mbox{\Hypertarget{classBinaryTree_ab7ca7386a799bd4ec8cece3a0e15d7e3}\label{classBinaryTree_ab7ca7386a799bd4ec8cece3a0e15d7e3}} 
 \index{BinaryTree$<$ TK, TV $>$@{BinaryTree$<$ TK, TV $>$}!find@{find}}
 \index{find@{find}!BinaryTree$<$ TK, TV $>$@{BinaryTree$<$ TK, TV $>$}}
 \subsubsection{\texorpdfstring{find()}{find()}}
 {\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
-\mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::\mbox{\hyperlink{classBinaryTree_1_1Iterator}{Iterator}} \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::find (\begin{DoxyParamCaption}\item[{const TK \&}]{key }\end{DoxyParamCaption})}
+\mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::\mbox{\hyperlink{classBinaryTree_1_1Iterator}{Iterator}} \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::find (\begin{DoxyParamCaption}\item[{const TK \&}]{key }\end{DoxyParamCaption}) const}
 
 Find if a given key exists in the tree. Returns an \mbox{\hyperlink{classBinaryTree_1_1Iterator}{Iterator}} to the \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}}. \mbox{\Hypertarget{classBinaryTree_a5b7168f283acc83b39e5af15b9817b47}\label{classBinaryTree_a5b7168f283acc83b39e5af15b9817b47}} 
 \index{BinaryTree$<$ TK, TV $>$@{BinaryTree$<$ TK, TV $>$}!goLeft@{goLeft}}
@@ -181,12 +185,12 @@ Find if a given key exists in the tree. Returns an \mbox{\hyperlink{classBinaryT
 {\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
 \mbox{\hyperlink{structBinaryTree_1_1Node}{Node}}$\ast$ \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::go\+Left (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
 
-Auxilary function to \mbox{\hyperlink{classBinaryTree_a828acf65e70cf4b6e106807a052ca508}{begin()}} / end() / \mbox{\hyperlink{classBinaryTree_afc1bfd2d748acb391605ffcf8c86439d}{cbegin()}} / cend() It finds the left most element of the tree (smaller key). \mbox{\Hypertarget{classBinaryTree_a2e953ad45f601f1e94dbdb85c67f0bbb}\label{classBinaryTree_a2e953ad45f601f1e94dbdb85c67f0bbb}} 
+Auxilary function to \mbox{\hyperlink{classBinaryTree_a828acf65e70cf4b6e106807a052ca508}{begin()}} / end() / \mbox{\hyperlink{classBinaryTree_afc1bfd2d748acb391605ffcf8c86439d}{cbegin()}} / cend() It finds the left most element of the tree (smaller key). \mbox{\Hypertarget{classBinaryTree_a356114cfeed3598a9a37907eafed7b25}\label{classBinaryTree_a356114cfeed3598a9a37907eafed7b25}} 
 \index{BinaryTree$<$ TK, TV $>$@{BinaryTree$<$ TK, TV $>$}!insert@{insert}}
 \index{insert@{insert}!BinaryTree$<$ TK, TV $>$@{BinaryTree$<$ TK, TV $>$}}
 \subsubsection{\texorpdfstring{insert()}{insert()}}
 {\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
-void \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::insert (\begin{DoxyParamCaption}\item[{const std\+::pair$<$ TK, TV $>$ \&}]{pair }\end{DoxyParamCaption})}
+\mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$ \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::insert (\begin{DoxyParamCaption}\item[{const std\+::pair$<$ TK, TV $>$ \&}]{pair }\end{DoxyParamCaption})}
 
 Insert new node to the \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}. \mbox{\Hypertarget{classBinaryTree_ad954acd76e1ad805b1bc8b7964dd9a58}\label{classBinaryTree_ad954acd76e1ad805b1bc8b7964dd9a58}} 
 \index{BinaryTree$<$ TK, TV $>$@{BinaryTree$<$ TK, TV $>$}!operator=@{operator=}}
@@ -202,14 +206,28 @@ Copy assignment. \mbox{\Hypertarget{classBinaryTree_a6a3f46892900021d0e7304d762c
 {\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
 \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$ \& \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::operator= (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$ \&\&}]{bt }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
 
-Move assignment. \mbox{\Hypertarget{classBinaryTree_a0a237f399143c32083d44623effa97ae}\label{classBinaryTree_a0a237f399143c32083d44623effa97ae}} 
+Move assignment. \mbox{\Hypertarget{classBinaryTree_ab5087864bf9bd49c1e5a79640066e34e}\label{classBinaryTree_ab5087864bf9bd49c1e5a79640066e34e}} 
+\index{BinaryTree$<$ TK, TV $>$@{BinaryTree$<$ TK, TV $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!BinaryTree$<$ TK, TV $>$@{BinaryTree$<$ TK, TV $>$}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
+const TV \& \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{const TK \&}]{key }\end{DoxyParamCaption}) const}
+
+Returns a const reference to the value associated with the key. If the key is not present, throws an exception. \mbox{\Hypertarget{classBinaryTree_a21bebae9adf0939f622b2bb47540694a}\label{classBinaryTree_a21bebae9adf0939f622b2bb47540694a}} 
+\index{BinaryTree$<$ TK, TV $>$@{BinaryTree$<$ TK, TV $>$}!operator\mbox{[}\mbox{]}@{operator[]}}
+\index{operator\mbox{[}\mbox{]}@{operator[]}!BinaryTree$<$ TK, TV $>$@{BinaryTree$<$ TK, TV $>$}}
+\subsubsection{\texorpdfstring{operator[]()}{operator[]()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
+TV \& \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::operator\mbox{[}$\,$\mbox{]} (\begin{DoxyParamCaption}\item[{const TK \&}]{key }\end{DoxyParamCaption})}
+
+Returns a reference to the value associated with the key. If the key is not present, it inserts the key with T\+TV\{\}. \mbox{\Hypertarget{classBinaryTree_a59ebcb199618fe76be5f3a9c813c95c9}\label{classBinaryTree_a59ebcb199618fe76be5f3a9c813c95c9}} 
 \index{BinaryTree$<$ TK, TV $>$@{BinaryTree$<$ TK, TV $>$}!pos\_find@{pos\_find}}
 \index{pos\_find@{pos\_find}!BinaryTree$<$ TK, TV $>$@{BinaryTree$<$ TK, TV $>$}}
 \subsubsection{\texorpdfstring{pos\_find()}{pos\_find()}}
 {\footnotesize\ttfamily template$<$class TK , class TV $>$ \\
-\mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$ \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::pos\+\_\+find (\begin{DoxyParamCaption}\item[{const TK \&}]{key }\end{DoxyParamCaption})}
+\mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::\mbox{\hyperlink{structBinaryTree_1_1Node}{Node}} $\ast$ \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}$<$ TK, TV $>$\+::pos\+\_\+find (\begin{DoxyParamCaption}\item[{const TK \&}]{key }\end{DoxyParamCaption}) const}
 
-auxiliary function for \mbox{\hyperlink{classBinaryTree_ae515b4f35af1e4f44a688cb8698471c8}{find()}} and \mbox{\hyperlink{classBinaryTree_a2e953ad45f601f1e94dbdb85c67f0bbb}{insert()}} 
+auxiliary function for \mbox{\hyperlink{classBinaryTree_ab7ca7386a799bd4ec8cece3a0e15d7e3}{find()}} and \mbox{\hyperlink{classBinaryTree_a356114cfeed3598a9a37907eafed7b25}{insert()}} 
 
 \subsection{Member Data Documentation}
 \mbox{\Hypertarget{classBinaryTree_a787363fcf3a4109694808f03b3793614}\label{classBinaryTree_a787363fcf3a4109694808f03b3793614}} 

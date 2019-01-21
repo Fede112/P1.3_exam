@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['afterdoc_5ftest',['Afterdoc_Test',['../classAfterdoc__Test.html',1,'']]]
+  ['binarytree',['BinaryTree',['../classBinaryTree.html',1,'']]]
 ];

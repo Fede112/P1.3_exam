@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['goleft',['goLeft',['../classBinaryTree.html#a5b7168f283acc83b39e5af15b9817b47',1,'BinaryTree']]]
+  ['keyval',['keyVal',['../structBinaryTree_1_1Node.html#a072d4d35344db07dc1bdec47d78e3a63',1,'BinaryTree::Node']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['find',['find',['../classBinaryTree.html#ae515b4f35af1e4f44a688cb8698471c8',1,'BinaryTree']]]
+  ['insert',['insert',['../classBinaryTree.html#a356114cfeed3598a9a37907eafed7b25',1,'BinaryTree']]],
+  ['iterator',['Iterator',['../classBinaryTree_1_1Iterator.html',1,'BinaryTree']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pos_5ffind',['pos_find',['../classBinaryTree.html#a0a237f399143c32083d44623effa97ae',1,'BinaryTree']]]
+  ['_7enode',['~Node',['../structBinaryTree_1_1Node.html#a3af4f97d0e37aaaa62fa9b3cc15864fb',1,'BinaryTree::Node']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['binarytree',['BinaryTree',['../classBinaryTree.html',1,'']]]
+  ['constiterator',['ConstIterator',['../classBinaryTree_1_1ConstIterator.html',1,'BinaryTree']]]
 ];
