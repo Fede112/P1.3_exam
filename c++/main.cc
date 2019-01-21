@@ -59,17 +59,6 @@ class BinaryTree
 	template <class otk, class otv>
 	friend std::ostream& operator<<(std::ostream&, const BinaryTree<otk, otv>&);
 
-
-	/** Returns a const reference to the value associated with the key.
-	*	If the key is not present, throws an exception.
-	*/
-	const TV& operator[](const TK& key) const;
-	/** Returns a reference to the value associated with the key.
-	*	If the key is not present, it inserts the key with TTV{}.
-	*/
-	TV& operator[](const TK& key);
-
-
 	// CONSTRUCTORS:
 	/** Default constructor. 
      *  Constructs and empty binary tree. treeSize is set to zero. 
@@ -87,6 +76,15 @@ class BinaryTree
 
 	/** Move assignment. */
 	BinaryTree& operator=(BinaryTree&& bt) noexcept;
+
+	/** Returns a const reference to the value associated with the key.
+	*	If the key is not present, throws an exception.
+	*/
+	const TV& operator[](const TK& key) const;
+	/** Returns a reference to the value associated with the key.
+	*	If the key is not present, it inserts the key with TTV{}.
+	*/
+	TV& operator[](const TK& key);
 
 	/** Iterator of the class */
 	class Iterator;

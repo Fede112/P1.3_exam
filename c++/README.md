@@ -30,4 +30,10 @@ Comentario de la figura (log(n) vs n) y como es la estadística.
 
 
 
-Insert
+Lastly, some comments about the implementation of two important functions of the class: `insert()` and `find()`.
+
+The core of both functions is another function, `pos_find(TK& key)`, which works as follows. It takes a key as an argument and returns a pointer to the node which matches that key. If the key is not present in the `BinaryTree` then it returns a pointer to the node directly above this missing key. By doing this, it simplifies the implementation of insert() and find(), which with almost all the work done for them, they just need a simple if condition to return what they are suppose to.
+
+------
+
+**Small comment**: Although optional, we implemented the operator[] in both of its versions. Both of them work, but for the const version we decided to throw an exception if the key you are looking is not in the tree. We are not sure if this is the best implementation. 

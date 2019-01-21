@@ -24,4 +24,11 @@ Figure 1 shows the results of the benchark. We compared the perfomance of the fo
 
 Comentario de la figura (log(n) vs n) y como es la estadística.
 
-Insert 
+Lastly, some comments about the implementation of two important functions of the class\+: {\ttfamily insert()} and {\ttfamily find()}.
+
+The core of both functions is another function, {\ttfamily pos\+\_\+find(\+T\+K\& key)}, which works as follows. It takes a key as an argument and returns a pointer to the node which matches that key. If the key is not present in the {\ttfamily \mbox{\hyperlink{classBinaryTree}{Binary\+Tree}}} then it returns a pointer to the node directly above this missing key. By doing this, it simplifies the implementation of insert() and find(), which with almost all the work done for them, they just need a simple if condition to return what they are suppose to.
+
+\DoxyHorRuler
+
+
+{\bfseries{Small comment}}\+: Although optional, we implemented the operator\mbox{[}\mbox{]} in both of its versions. Both of them work, but for the const version we decided to throw an exception if the key you are looking is not in the tree. We are not sure if this is the best implementation. 
