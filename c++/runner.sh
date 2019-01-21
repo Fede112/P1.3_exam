@@ -75,7 +75,7 @@ EXE=main.x
 
 INNER_REPETIONS=1000
 REPETITIONS=10
-SIZES=`seq 100 1000 30100` 
+SIZES=`seq 100 1000 50100` 
 # Compiling ------------------------------------------
 make
 
