@@ -1,0 +1,4 @@
+sudo chown -R $USER:$USER ./opt
+
+
+sudo chown -R $USER:$USER /usr/local/bin/

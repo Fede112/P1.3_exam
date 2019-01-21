@@ -7,31 +7,40 @@
 #include <vector>
 #include <array>
 #include <map>
+#include <stdexcept>
 
-enum class insertDir { left_dir, right_dir };
-
+/*! \brief A binary tree class to store data.
+ *
+ *  The class is templated in both the Key and the Value.
+ *	At the moment it only handles key types which have operations: ==, <, > defined.
+ */
 template <class TK, class TV>
 class BinaryTree 
 {
-	// Elements from nested class are 
-	// not visible from the container class. 
-	// That's why we choose structs.	
+	// Elements from nested class are not visible from the container class. That's why we choose structs.
+	/*! \brief A struct that contains the data of each node in the BinaryTree.
+	*
+	* 	We choose a struct so that elements its members are visible from the container class.
+	*/
 	struct Node 
 	{
-		std::pair <TK,TV> keyVal;
-		Node* ppNode; // std::share_ptr
-		std::unique_ptr<Node> left;
-		std::unique_ptr<Node> right;
+		std::pair <TK,TV> keyVal; /*!< stores the key and value of the node. */
+		Node* ppNode; /*!< Pointer to the proper parent of the node. This is, the node which key is next in the tree (Increasing key order) */
+		std::unique_ptr<Node> left;	/*!< Unique pointer to the left node from *this node */
+		std::unique_ptr<Node> right; /*!< Unique pointer to the right node from *this node */
 		
-		// constructor that takes key and value separately
+		/** Constructor that takes key and value separately. */
 		Node(const TK& key, const TV& val, Node * s, Node * l, Node * r) 
 		: keyVal{key, val}, ppNode{s}, left{l}, right{r} {}
 		
-		// constructor that takes key and value as std::pair
+		/** Constructor that takes key and value as std::pair */
 		Node(const std::pair <TK,TV> kV , Node * s, Node * l, Node * r) 
 		: keyVal{kV}, ppNode{s}, left{l}, right{r} {}
 
+		/** Default Constructor */
 		Node() = default;
+
+		/** Default Destructor */
 		// ~Node() {std::cout << "Calling destructor of node " << keyVal.first << std::endl;}
 		~Node() {}
 		void print_node() // sada
@@ -41,62 +50,76 @@ class BinaryTree
 			if (!left && right) {std::cout << "null" << " <--- " << keyVal.first << " ---> " << right->keyVal.first << std::endl;}
 			if (left && !right) {std::cout << left->keyVal.first << " <--- " << keyVal.first << " ---> " << "null" << std::endl;}
 			if (!left && !right) {std::cout << "null" << " <--- " << keyVal.first << " ---> " << "null" << std::endl;}
-			
-			// if(left){std::cout << "k: " << keyVal.first << " l: " << left->keyVal.first << std::endl;}
-			// if(right){std::cout << "k: " << keyVal.first << " r: " << right->keyVal.first << std::endl;}
+			return;	
 		}
 	};
 
 	// pointer to root node of the binary tree by default it is initialize to nullptr
-	std::unique_ptr<Node> root;
-	std::size_t treeSize;
+	std::unique_ptr<Node> root; /*!< pointer to root node. */
+	std::size_t treeSize; /*!< stores the numbers of nodes in the list. */
 
 	public:
 
 	template <class otk, class otv>
 	friend std::ostream& operator<<(std::ostream&, const BinaryTree<otk, otv>&);
 
+
+	/** Returns a const reference to the value associated with the key.
+	*	If the key is not present, throws an exception.
+	*/
+	const TV& operator[](const TK& key) const;
+	/** Returns a reference to the value associated with the key.
+	*	If the key is not present, it inserts the key with TTV{}.
+	*/
+	TV& operator[](const TK& key);
+
+
 	// CONSTRUCTORS:
-	// BinaryTree() = default;
-	// BinaryTree(): treeSize{0} {std::cout << "tree size " << treeSize << std::endl;}
+	/** Default constructor. 
+     *  Constructs and empty binary tree. treeSize is set to zero. 
+     */
 	BinaryTree(): treeSize{0}  {}
 	
-	// Copy constructor
+	/** Copy constructor.*/
 	BinaryTree(const BinaryTree&);
 	
-	// Copy assignment
+	/** Copy assignment. */
 	BinaryTree& operator=(const BinaryTree& v);
 
-	// Move constructor
+	/** Move constructor. */
 	BinaryTree(BinaryTree&& bt) noexcept;
 
-	// Move assignment
+	/** Move assignment. */
 	BinaryTree& operator=(BinaryTree&& bt) noexcept;
 
-	
-	// Define Iterators
+	/** Iterator of the class */
 	class Iterator;
+	/** ConstIterator of the class */
 	class ConstIterator;
 
 	// begin() and end() function for Iterators/ConstIterators:
-	// Used when the user wants to change the value of a Tree using iterators
-	Iterator begin() {return Iterator{goLeft()};}//{ std::cout << "Iterator! \n";return Iterator{goLeft()}; }
+	
+	/** Used when the user wants to change the value of a Tree using iterators.	*/
+	Iterator begin() { return Iterator{goLeft()}; }
 	Iterator end(){return Iterator{nullptr};}
 
-	// Used so that the user cannot change the state of a Tree using a reference call to a const Tree
-	ConstIterator begin() const {return ConstIterator{goLeft()};}//{ std::cout << "ConstIterator! \n"; return ConstIterator{goLeft()}; }
+	/** Used so that the user cannot change the state of a Tree using a reference call to a const Tree.*/
+	ConstIterator begin() const { return ConstIterator{goLeft()}; }
 	ConstIterator end() const { return ConstIterator{nullptr}; }
 
-	// Used if we don´t want to change the state of a tree, but we are not using a const Tree 
-	ConstIterator cbegin() {return ConstIterator{goLeft()};}//{ std::cout << "ConstIterator! cbegin \n"; return ConstIterator{goLeft()}; }
+	/** Used if we don´t want to change the state of a tree, but we are not using a const Tree. */
+	ConstIterator cbegin() { return ConstIterator{goLeft()}; }
 	ConstIterator cend() { return ConstIterator{nullptr};}
 
-	// To use if the user calls cbegin on a const Tree 
-	// (we allow the user to be lazy and not think about const Tree vs. noConst Tree)
-	ConstIterator cbegin() const {return ConstIterator{goLeft()};}//{ std::cout << "ConstIterator! cbegin const\n"; return ConstIterator{goLeft()}; }
+	/** To use if the user calls cbegin on a const Tree.
+	* (we allow the user to be lazy and not think about const Tree vs. noConst Tree)
+	*/
+	ConstIterator cbegin() const {return ConstIterator{goLeft()}; }
 	ConstIterator cend() const { return ConstIterator{nullptr};}
 
-	// auxilary function to begin() / end() / cbegin() / cend()
+	/** Auxilary function to begin() / end() / cbegin() / cend() 
+	* It finds the left most element of the tree (smaller key).
+	*/
 	Node * goLeft() const
 	{
 		Node * tmp = root.get();
@@ -104,19 +127,23 @@ class BinaryTree
 		return tmp;
 	}
 
-	// Insert new node
-	void insert(const std::pair<TK,TV>& pair);
-	// Find if a given key exists
- 	Iterator find(const TK& key);
-	// auxiliary funtion for find() and insert()
-	Node* pos_find(const TK& key);
-	// Remove ALL nodes from tree
+	/** Insert new node to the BinaryTree. */
+	Node* insert(const std::pair<TK,TV>& pair);
+	/** Find if a given key exists in the tree.
+	*	Returns an Iterator to the Node.
+	*/
+ 	Iterator find(const TK& key) const;
+	/** auxiliary function for find() and insert() */
+	Node* pos_find(const TK& key) const;
+	/** Remove ALL nodes from tree */
 	void clear(){root.reset(); treeSize=0;}
-	// Retrieve tree size
+	/** Retrieve tree size */
 	std::size_t checkSize() const {return treeSize;}
-	// auxilary function of the copy constructor
+	/** auxilary function of the copy constructor */
 	void copy_node(const Node * np);
-	// balance the tree
+	/** balance the tree
+	*	The balance is not in place.
+	*/
 	void balance(BinaryTree& balanceTree, Iterator begin, std::size_t locSize);
 
 
@@ -188,13 +215,14 @@ class BinaryTree<TK,TV>::Iterator
 
 	public:
 	Iterator(Node* n) : current{n} {}
-
+	/** Returns the std::pair keyVal of the node by reference*/
 	std::pair<TK,TV>& operator*() const { return current->keyVal; }	
 	// TK& operator*() const { return current->keyVal.first; }	
 
 	bool operator==(const Iterator& other) { return current == other.current; }
 	bool operator!=(const Iterator& other) { return !(*this == other); }
 
+	/** It points the iterator to the next node in the tree asuming ascending key order. */
 	Iterator& operator++() 
 	{
 		if (! (current->right.get() ) ) {current = current->ppNode; return *this;}
@@ -207,9 +235,10 @@ class BinaryTree<TK,TV>::Iterator
 template <class TK, class TV>
 class BinaryTree<TK,TV>::ConstIterator: public BinaryTree<TK,TV>::Iterator {
  public:
-  using parent = BinaryTree<TK, TV>::Iterator;
-  using parent::Iterator; 
-  const std::pair<TK,TV>& operator*() const { return parent::operator*(); }
+	using parent = BinaryTree<TK, TV>::Iterator;
+	using parent::Iterator; 
+	/** Returns a const std::pair keyVal of the node by reference*/
+	const std::pair<TK,TV>& operator*() const { return parent::operator*(); }
 };
 
 /////////////////////////////////////////////////////////////////
@@ -227,8 +256,7 @@ std::ostream& operator<<(std::ostream& os, const BinaryTree<TK, TV>& tree)
 // Declaration
 
 template <class TK, class TV>
-// BinaryTree<TK,TV>::Node* BinaryTree<TK, TV>::pos_x(const std::pair<TK,TV>& pair)
-typename BinaryTree<TK,TV>::Node* BinaryTree<TK, TV>::pos_find(const TK& key)
+typename BinaryTree<TK,TV>::Node* BinaryTree<TK, TV>::pos_find(const TK& key) const
 {
 	// using Node = BinaryTree<TK, TV>::Node;
 	Node* tmpA = root ? root.get() : nullptr;
@@ -260,7 +288,7 @@ typename BinaryTree<TK,TV>::Iterator BinaryTree<TK, TV>::find(const TK& key)
 }
 
 template <class TK, class TV>
-void BinaryTree<TK, TV>::insert(const std::pair<TK,TV>& pair)
+typename BinaryTree<TK,TV>::Node* BinaryTree<TK, TV>::insert(const std::pair<TK,TV>& pair)
 {
 	using Node = BinaryTree<TK, TV>::Node;
 	treeSize ++;
@@ -270,20 +298,65 @@ void BinaryTree<TK, TV>::insert(const std::pair<TK,TV>& pair)
 	if (pos && pair.first < pos->keyVal.first)
 	{
 		pos->left.reset(new Node{pair, pos, nullptr, nullptr});
-		// pos->print_node();
-	
+		return pos->left.get();
 	}
 	else if (pos && pair.first > pos->keyVal.first)
-	{
+	{	
 		pos->right.reset(new Node{pair,  pos->ppNode, nullptr, nullptr});
-		// pos->print_node();		
+		return pos->right.get();
 	}
 	else if (pos && pair.first == pos->keyVal.first)
-		{(pos->keyVal.second)++; treeSize--;}
+	{	
+		(pos->keyVal.second)++; treeSize--;
+		return pos;
+	}
 	else
-		root.reset(new Node{pair, nullptr, nullptr, nullptr}); 
+	{
+		root.reset(new Node{pair, nullptr, nullptr, nullptr});
+		return root.get();
+	}
+
 }
 
+template <class TK, class TV>
+typename BinaryTree<TK,TV>::Iterator BinaryTree<TK, TV>::find(const TK& key) const
+{
+	using Node = BinaryTree<TK, TV>::Node;
+	Node* pos = BinaryTree<TK, TV>::pos_find(key);
+	if (pos && key == pos->keyVal.first )
+	{
+		return Iterator{pos};
+	}
+	return Iterator{nullptr};
+}
+
+template <class TK, class TV>
+const TV& BinaryTree<TK, TV>::operator[](const TK& key) const
+{
+	using Node = BinaryTree<TK, TV>::Node;
+	Node* pos = BinaryTree<TK, TV>::pos_find(key);
+	if (pos && key == pos->keyVal.first )
+	{
+		return pos->keyVal.second;
+	}
+	std::string errMsg = "Cannot insert new node. Const reference to Tree!";
+	throw std::runtime_error("Error! " + errMsg);
+}
+
+template <class TK, class TV>
+TV& BinaryTree<TK, TV>::operator[](const TK& key)
+{
+	using Node = BinaryTree<TK, TV>::Node;
+	Node* pos = BinaryTree<TK, TV>::pos_find(key);
+	if (pos && key == pos->keyVal.first )
+	{
+		return pos->keyVal.second;
+	}
+	else
+	{
+		return BinaryTree<TK, TV>::insert(std::pair<TK,TV>(key,TV{}))->keyVal.second;
+	}
+}
 
 template <class TK, class TV>
 void BinaryTree<TK, TV>::balance(BinaryTree<TK, TV>& balanceTree, BinaryTree<TK,TV>::Iterator begin, std::size_t locSize)
@@ -317,6 +390,8 @@ void BinaryTree<TK, TV>::dummy_func(BinaryTree<TK,TV>::Iterator it)
 int main(int argc, char const *argv[])
 {
 
+	/////////////////////////////////////////////////////////////////
+	// TEST
 	#ifdef TEST
 
 	if(argc != 1)
@@ -325,8 +400,6 @@ int main(int argc, char const *argv[])
 		exit(1);
 	}
 
-	/////////////////////////////////////////////////////////////////
-	
 	BinaryTree<int, int> test1;
 	BinaryTree<int, int> test2;
 
@@ -339,8 +412,11 @@ int main(int argc, char const *argv[])
 	}
 
 	/////////////////////////////////////////////////////////////////
-
-
+	// TEST operator[]
+	std::cout << "\noperator[] test:" << std::endl;
+	std::cout << test1;
+	test1[21];
+	std::cout << test1;
 
 	/////////////////////////////////////////////////////////////////
 	// COPY AND MOVE SEMANTICS TEST
@@ -405,6 +481,8 @@ int main(int argc, char const *argv[])
 	std::cout << (look1 != find_stop) << std::endl;
 	std::cout << "Looking for 5: " ;
 	std::cout << (look2 != find_stop) << std::endl;
+		
+	/////////////////////////////////////////////////////////////////
 
 	#endif		
 	
@@ -468,7 +546,6 @@ int main(int argc, char const *argv[])
 		t_map += duration_cast<nanoseconds> (end - begin).count();
 	}
 	
-
 	std::cout << N << " " << t_non_b*10e-6 << " " << t_bal*10e-6<< " " << t_map*10e-6 << std::endl;
 	///////////////////////////////////////////////////////////////
 	#endif
@@ -478,6 +555,3 @@ int main(int argc, char const *argv[])
 }
 
 
-	// for (std::size_t i=0; i<N; ++i) {auto found_at1 = nonBalanced_bigTree.find(N-i);}
-	// std::cout << "-----------------------" << std::endl;
-	// for (std::size_t i=0; i<N; ++i) {auto found_at1 = balanced_bigTree.find(N-i);}

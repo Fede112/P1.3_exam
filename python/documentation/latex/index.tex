@@ -1,0 +1,28 @@
+\subsubsection*{Jesus Espinoza and Federico Barone}
+
+\DoxyHorRuler
+
+
+For this exercise we were asked to implement a class that handles a list of postcards organized in different files.
+
+The class should include specific member functions which its implementation can be explained with the following workflow example\+:
+
+ 
+\begin{DoxyImage}
+\includegraphics[width=\textwidth,height=\textheight/2,keepaspectratio=true]{py_workflow.png}
+\doxyfigcaption{Figure 1\+: Workflow example}
+\end{DoxyImage}
+  
+
+Initially we have three files\+:
+
+
+\begin{DoxyItemize}
+\item File 1 contains a list of postcards
+\item File 2 contains a different list of postcards
+\item File 3 is empty.
+\end{DoxyItemize}
+
+We create an instance of {\ttfamily postcard\+List} which is initially empty. The function {\ttfamily read\+File(\+F1)} populates the object with the information of F1. Note that self.\+\_\+file = F1. {\ttfamily update\+Lists(\+F2)} updates the information stored in the object with the one contained in F2 and calls the {\ttfamily update\+File()} function to dump the new information in File 1 (the file associated with the object). Lastly, {\ttfamily write\+File(\+F3)} is used to dump the information stored in the object to a new file. The object is still associated with F1. There are additional member functions that handle specific queries to the postcard\+List. More documentation is available in the documentation folder. We did it with {\ttfamily Doxygen} just to try it out.
+
+There were a lot different implementations, we choose this as an example, trying to force consistency between the instance of the class and the file associated to it. 

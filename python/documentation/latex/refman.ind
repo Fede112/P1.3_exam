@@ -1,0 +1,41 @@
+\begin{theindex}
+
+  \item {exam\_solution.PostcardList}, \hyperpage{5}
+    \subitem {getNumberOfPostcards}, \hyperpage{5}
+    \subitem {getPostcardsByDateRange}, \hyperpage{6}
+    \subitem {getPostcardsByReceiver}, \hyperpage{6}
+    \subitem {getPostcardsBySender}, \hyperpage{6}
+    \subitem {readFile}, \hyperpage{6}
+    \subitem {updateFile}, \hyperpage{7}
+    \subitem {updateLists}, \hyperpage{7}
+    \subitem {writeFile}, \hyperpage{7}
+
+  \indexspace
+
+  \item {getNumberOfPostcards}
+    \subitem {exam\_solution.PostcardList}, \hyperpage{5}
+  \item {getPostcardsByDateRange}
+    \subitem {exam\_solution.PostcardList}, \hyperpage{6}
+  \item {getPostcardsByReceiver}
+    \subitem {exam\_solution.PostcardList}, \hyperpage{6}
+  \item {getPostcardsBySender}
+    \subitem {exam\_solution.PostcardList}, \hyperpage{6}
+
+  \indexspace
+
+  \item {readFile}
+    \subitem {exam\_solution.PostcardList}, \hyperpage{6}
+
+  \indexspace
+
+  \item {updateFile}
+    \subitem {exam\_solution.PostcardList}, \hyperpage{7}
+  \item {updateLists}
+    \subitem {exam\_solution.PostcardList}, \hyperpage{7}
+
+  \indexspace
+
+  \item {writeFile}
+    \subitem {exam\_solution.PostcardList}, \hyperpage{7}
+
+\end{theindex}
