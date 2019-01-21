@@ -1,2 +1,1 @@
-# P1.3_exam
-Exam of P1.3 Advanced Programming  - Espinoza y Barone
+Exam of P1.3 Advanced Programming  - Jesus Espinoza and Federico Barone
