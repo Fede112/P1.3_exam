@@ -142,7 +142,7 @@ class BinaryTree
 	/** balance the tree
 	*	The balance is not in place.
 	*/
-	void balance(BinaryTree& balanceTree, Iterator begin, std::size_t locSize);
+	void balance(BinaryTree& balanceTree, ConstIterator begin, const std::size_t locSize);
 
 };
 
@@ -207,9 +207,9 @@ template <class TK, class TV>
 class BinaryTree<TK,TV>::Iterator
 {
 	using Node = BinaryTree<TK, TV>::Node;
+ protected:
 	Node* current;
-
-	public:
+ public:
 	Iterator(Node* n) : current{n} {}
 	/** Returns the std::pair keyVal of the node by reference*/
 	std::pair<TK,TV>& operator*() const { return current->keyVal; }	
@@ -230,11 +230,20 @@ class BinaryTree<TK,TV>::Iterator
 
 template <class TK, class TV>
 class BinaryTree<TK,TV>::ConstIterator: public BinaryTree<TK,TV>::Iterator {
- public:
 	using parent = BinaryTree<TK, TV>::Iterator;
-	using parent::Iterator; 
+	using parent::current; 
+ public:
+	using parent::Iterator;
 	/** Returns a const std::pair keyVal of the node by reference*/
 	const std::pair<TK,TV>& operator*() const { return parent::operator*(); }
+
+	ConstIterator& operator++() 
+	{
+		if (! (current->right.get() ) ) {current = current->ppNode; return *this;}
+		current = current->right.get();
+		while (current->left.get()) {current = current->left.get();}
+		return *this;
+	}
 };
 
 /////////////////////////////////////////////////////////////////
@@ -344,11 +353,11 @@ TV& BinaryTree<TK, TV>::operator[](const TK& key)
 }
 
 template <class TK, class TV>
-void BinaryTree<TK, TV>::balance(BinaryTree<TK, TV>& balanceTree, BinaryTree<TK,TV>::Iterator begin, std::size_t locSize)
+void BinaryTree<TK, TV>::balance(BinaryTree<TK, TV>& balanceTree, BinaryTree<TK,TV>::ConstIterator begin, const std::size_t locSize)
 {	
 	if (locSize == 1) {balanceTree.insert(*begin); return;}
 	
-	BinaryTree<TK,TV>::Iterator tmp{begin}; // shallow copy constructor of Iterator
+	BinaryTree<TK,TV>::ConstIterator tmp{begin}; // shallow copy constructor of Iterator
 	std::size_t median;
 	std::size_t locSize_L;
 	std::size_t locSize_R;
@@ -477,7 +486,7 @@ int main(int argc, char const *argv[])
 	std::array<int, 9> keys_ub{1,2,3,4,5,6,7,8,9};	
 	for (auto x: keys_ub) {unbalancedTree.insert(std::pair<int,int>(x,1));}
 	
-	unbalancedTree.balance(balancedTree, unbalancedTree.begin(), unbalancedTree.checkSize());
+	unbalancedTree.balance(balancedTree, unbalancedTree.cbegin(), unbalancedTree.checkSize());
 	std::cout << "\nCompleted balance tests.\n" << std::endl;
 		
 	/////////////////////////////////////////////////////////////////
@@ -513,7 +522,7 @@ int main(int argc, char const *argv[])
 	std::vector<int> aLotOfKeys;	
 	for (std::size_t i=0; i<N; ++i) {aLotOfKeys.push_back(N-i);}
 	for (auto x: aLotOfKeys) { nonBalanced_bigTree.insert(std::pair<int,int>(x,1)); std_map.insert( std::pair<int,int>(x,1) ); }
-	nonBalanced_bigTree.balance(balanced_bigTree, nonBalanced_bigTree.begin(), nonBalanced_bigTree.checkSize());
+	nonBalanced_bigTree.balance(balanced_bigTree, nonBalanced_bigTree.cbegin(), nonBalanced_bigTree.checkSize());
 
 	
 	BinaryTree<int, int>::Iterator found_at1{nullptr};
