@@ -1,26 +1,33 @@
 CXX=c++
-CXXFLAGS= -Wall -Wextra -std=c++11 -O3
-
+CXXFLAGS= -I include -Wall -Wextra -std=c++11 -O3
+LDFLAGS=
 DEBUG= -g -ggdb
  
-SRC=main.cc
-EXE=$(SRC:.cc=.x)
+EXE=main.x
+OBJS=main.o src/binarytree.o 
 
-all: $(EXE)
+default: $(EXE)
 
-%.x:%.cc
-	$(CXX) $(CXXFLAGS) $< -o $@
+$(EXE): $(OBJS)
+	$(CXX) $^ -o $@  $(LDFLAGS)
+
+%.o: %.cc
+	$(CXX) -c $< -o $@  $(CXXFLAGS) 
+
+
+main.o: include/binarytree.h include/iterator.h 
+src/binarytree.o: include/binarytree.h include/iterator.h
 
 debug: CXXFLAGS += $(DEBUG) -DTEST
-debug: all
+debug: default
 debug: 
 	valgrind ./${EXE} 
 
 test: CXXFLAGS += -DTEST
-test: all
+test: default
 
 benchmark: CXXFLAGS += -DBENCHMARK
-benchmark: all
+benchmark: default
 benchmark:
 	./runner.sh
 
@@ -28,7 +35,6 @@ plot:
 	./plotter.sh
 
 clean:
-	rm -rf *~ $(EXE) *.png ./DATA/*
+	rm -rf $(OBJS) *~ $(EXE) *.png ./DATA/*
 
-.PHONY: clean all debug
-
+.PHONY: default debug test benchmark clean
