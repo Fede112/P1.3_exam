@@ -1,5 +1,5 @@
 CXX=c++
-CXXFLAGS= -I include -Wall -Wextra -std=c++11 -O3
+CXXFLAGS= -I./include -Wall -Wextra -std=c++11 -O3
 LDFLAGS=
 DEBUG= -g -ggdb
  
@@ -14,7 +14,6 @@ $(EXE): $(OBJS)
 %.o: %.cc
 	$(CXX) -c $< -o $@  $(CXXFLAGS) 
 
-
 main.o: include/binarytree.h include/iterator.h 
 src/binarytree.o: include/binarytree.h include/iterator.h
 
@@ -25,6 +24,7 @@ debug:
 
 test: CXXFLAGS += -DTEST
 test: default
+	./main.x
 
 benchmark: CXXFLAGS += -DBENCHMARK
 benchmark: default

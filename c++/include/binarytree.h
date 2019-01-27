@@ -1,11 +1,8 @@
 #ifndef BINARYTREE
 #define BINARYTREE
 
-#include <stdlib.h>		// atoi 
-#include <iostream> 	// std::cout
-#include <utility>		// std::pair
+
 #include <memory>		// unique_ptr
-#include <stdexcept>	// std::runtime_error
 // 
 
 template <class TK, class TV>
@@ -136,6 +133,5 @@ class BinaryTree
 
 };
 
-#include "iterator.h"
 
 #endif

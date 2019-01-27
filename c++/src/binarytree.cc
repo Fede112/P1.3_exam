@@ -1,3 +1,9 @@
+
+#include <stdlib.h>		// atoi 
+#include <iostream> 	// std::cout
+#include <utility>		// std::pair
+#include <stdexcept>	// std::runtime_error
+
 #include "iterator.h"
 #include "binarytree.h"
 
@@ -208,4 +214,34 @@ void BinaryTree<TK, TV>::balance(BinaryTree<TK, TV>& balanceTree, BinaryTree<TK,
 	if (locSize_R == 0) {return;}
 	balance(balanceTree, ++tmp, locSize_R);
 }
+
+
+template BinaryTree<int,int>::BinaryTree(const BinaryTree<int, int>& bt);
+template BinaryTree<int,int>& BinaryTree<int,int>::operator=(const BinaryTree<int, int>& bt) ;
+template void BinaryTree<int,int>::copy_node(const BinaryTree<int, int>::Node * np);
+template BinaryTree<int, int>::BinaryTree(BinaryTree&& bt) noexcept; // move semantics cannot throw exceptions because objects are already allocated;
+template BinaryTree<int, int>& BinaryTree<int, int>::operator=(BinaryTree&& bt) noexcept;
+template std::ostream& operator<<(std::ostream& os, const BinaryTree<int, int>& tree) ;
+template typename BinaryTree<int,int>::Node * BinaryTree<int, int>::goLeft() const;
+template typename BinaryTree<int,int>::Node* BinaryTree<int, int>::pos_find(const int& key) const;
+template typename BinaryTree<int,int>::Iterator BinaryTree<int, int>::find(const int& key) const ;
+template typename BinaryTree<int,int>::Node* BinaryTree<int, int>::insert(const std::pair<int,int>& pair);
+template const int& BinaryTree<int, int>::operator[](const int& key) const;
+template int& BinaryTree<int, int>::operator[](const int& key);
+template void BinaryTree<int, int>::balance(BinaryTree<int, int>& balanceTree, BinaryTree<int,int>::ConstIterator begin, const std::size_t locSize);
+
+
+template BinaryTree<double,double>::BinaryTree(const BinaryTree<double, double>& bt);
+template BinaryTree<double,double>& BinaryTree<double,double>::operator=(const BinaryTree<double, double>& bt) ;
+template void BinaryTree<double,double>::copy_node(const BinaryTree<double, double>::Node * np);
+template BinaryTree<double, double>::BinaryTree(BinaryTree&& bt) noexcept; // move semantics cannot throw exceptions because objects are already allocated;
+template BinaryTree<double, double>& BinaryTree<double, double>::operator=(BinaryTree&& bt) noexcept;
+template std::ostream& operator<<(std::ostream& os, const BinaryTree<double, double>& tree) ;
+template typename BinaryTree<double,double>::Node * BinaryTree<double, double>::goLeft() const;
+template typename BinaryTree<double,double>::Node* BinaryTree<double, double>::pos_find(const double& key) const;
+template typename BinaryTree<double,double>::Iterator BinaryTree<double, double>::find(const double& key) const ;
+template typename BinaryTree<double,double>::Node* BinaryTree<double, double>::insert(const std::pair<double,double>& pair);
+template const double& BinaryTree<double, double>::operator[](const double& key) const;
+template double& BinaryTree<double, double>::operator[](const double& key);
+template void BinaryTree<double, double>::balance(BinaryTree<double, double>& balanceTree, BinaryTree<double,double>::ConstIterator begin, const std::size_t locSize);
 
