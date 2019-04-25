@@ -11,7 +11,7 @@ class BinaryTree
 	// Elements from nested class are not visible from the container class. That's why we choose structs.
 	/*! \brief A struct that contains the data of each node in the BinaryTree.
 	*
-	* 	We choose a struct so that elements its members are visible from the container class.
+	* 	We choose a struct so that its members are visible from the container class.
 	*/
 	struct Node 
 	{
@@ -21,11 +21,11 @@ class BinaryTree
 		std::unique_ptr<Node> right; /*!< Unique pointer to the right node from *this node */
 		
 		/** Constructor that takes key and value separately. */
-		Node(const TK& key, const TV& val, Node * s, Node * l, Node * r) 
+		Node(const TK& key, const TV& val, Node * const s, const Node * const l, Node * const r) 
 		: keyVal{key, val}, ppNode{s}, left{l}, right{r} {}
 		
 		/** Constructor that takes key and value as std::pair */
-		Node(const std::pair <TK,TV> kV , Node * s, Node * l, Node * r) 
+		Node(const std::pair <TK,TV> kV , Node * const s, Node * const l, Node * const r) 
 		: keyVal{kV}, ppNode{s}, left{l}, right{r} {}
 
 		/** Default Constructor */
@@ -91,7 +91,7 @@ class BinaryTree
 	
 	/** Used when the user wants to change the value of a Tree using iterators.	*/
 	Iterator begin() { return Iterator{goLeft()}; }
-	Iterator end(){return Iterator{nullptr};}
+	Iterator end(){ return Iterator{nullptr};}
 
 	/** Used so that the user cannot change the state of a Tree using a reference call to a const Tree.*/
 	ConstIterator begin() const { return ConstIterator{goLeft()}; }

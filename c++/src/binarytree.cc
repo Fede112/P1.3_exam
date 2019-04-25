@@ -61,28 +61,6 @@ BinaryTree<TK, TV>& BinaryTree<TK, TV>::operator=(BinaryTree&& bt) noexcept
 	return *this;
 }
 
-////////////////////////////////////////////////////////////////
-
-
-// template <class TK, class TV>
-// class BinaryTree<TK,TV>::ConstIterator: public BinaryTree<TK,TV>::Iterator {
-// 	using parent = BinaryTree<TK, TV>::Iterator;
-// 	using parent::current; 
-//  public:
-// 	using parent::Iterator;
-// 	/** Returns a const std::pair keyVal of the node by reference*/
-// 	const std::pair<TK,TV>& operator*() const { return parent::operator*(); }
-
-// 	ConstIterator& operator++() 
-// 	{
-// 		if (! (current->right.get() ) ) {current = current->ppNode; return *this;}
-// 		current = current->right.get();
-// 		while (current->left.get()) {current = current->left.get();}
-// 		return *this;
-// 	}
-// };
-
-/////////////////////////////////////////////////////////////////
 
 template <class TK, class TV>
 std::ostream& operator<<(std::ostream& os, const BinaryTree<TK, TV>& tree) 

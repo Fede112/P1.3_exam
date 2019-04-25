@@ -58,7 +58,7 @@ int main(int argc, char const *argv[])
 	std::cout << test_copy_asg;
 	BinaryTree<int, int> test_move_ctr = std::move(test1);
 	std::cout << test_move_ctr;
-	test_move_asg = test_move_ctr;
+	test_move_asg = std::move(test_move_ctr);
 	std::cout << test_move_asg;	
 	std::cout << "\nCompleted copy and move semantics tests.\n" << std::endl;
 	/////////////////////////////////////////////////////////////////
